@@ -6,6 +6,7 @@ using GeneticSharp.Domain.Mutations;
 using GeneticSharp.Domain.Populations;
 using GeneticSharp.Domain.Selections;
 using GeneticSharp.Domain.Terminations;
+using org.mariuszgromada.math.mxparser;
 using System;
 
 namespace zad1
@@ -14,14 +15,22 @@ namespace zad1
     {
         static void Main(string[] args)
         {
-            float maxWidth = 998f;
-            float maxHeight = 680f;
+            //var selection = Selection(1);
+            //var crossover = Crossover(1, 0.5f);
+            //var mutation = Mutation(1);
+            //var termination = Termination(1, 100);
+            Menu(out string[] names,
+                 out string expression,
+                 out ISelection selection,
+                 out ICrossover crossover,
+                 out IMutation mutation,
+                 out ITermination termination);
 
             var chromosome = new FloatingPointChromosome(
-                new double[] { 0, 0, 0, 0 },
-                new double[] { maxWidth, maxHeight, maxWidth, maxHeight },
-                new int[] { 10, 10, 10, 10 },
-                new int[] { 0, 0, 0, 0 });
+                new double[2 * 2].Fill(Int32.MinValue),
+                new double[2 * 2].Fill(Int32.MaxValue),
+                new int[2 * 2].Fill(2 * 8 * sizeof(Int32)),
+                new int[2 * 2].Fill(0));
             var population = new Population(50, 100, chromosome);
             var fitness = new FuncFitness(genotype =>
             {
@@ -35,11 +44,6 @@ namespace zad1
 
                 return Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(y2 - y1, 2));
             });
-
-            var selection = Selection(1);
-            var crossover = Crossover(1, 0.5f);
-            var mutation = Mutation(1);
-            var termination = Termination(1, 100);
 
             var geneticAlgorithm = new GeneticAlgorithm(population, fitness, selection, crossover, mutation)
             {
@@ -70,6 +74,108 @@ namespace zad1
             geneticAlgorithm.Start();
 
             Console.ReadKey();
+        }
+
+        private static void Menu(
+            out string[] names, out string expression,
+            out ISelection selection, out ICrossover crossover,
+            out IMutation mutation, out ITermination termination)
+        {
+            Console.Clear();
+            Console.Write("Enter variable names separated by space:\t");
+            names = Console.ReadLine().Split(' ');
+
+            Console.WriteLine("\nEnter your expression:");
+            expression = Console.ReadLine();
+
+            int selection_n;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Choose selection method" +
+                    "\n[1] Elite" +
+                    "\n[2] Roulette Wheel" +
+                    "\n[3] Stochastic Universal Sampling" +
+                    "\n[4] Tournament");
+                try
+                {
+                    selection_n = int.Parse(Console.ReadKey().KeyChar.ToString());
+                }
+                catch
+                {
+                    selection_n = -1;
+                    continue;
+                }
+            } while (!(1 <= selection_n && selection_n <= 4));
+            selection = Selection(selection_n);
+
+            int crossover_n;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Choose crossover method:" +
+                    "\n[1] Uniform" +
+                    "\n[2] Cut and Splice" +
+                    "\n[3] Cycle" +
+                    "\n[4] One Point" +
+                    "\n[5] Partially Mapped" +
+                    "\n[6] Postition Based" +
+                    "\n[7] Three Parent");
+                try
+                {
+                    crossover_n = int.Parse(Console.ReadKey().KeyChar.ToString());
+                }
+                catch
+                {
+                    crossover_n = -1;
+                    continue;
+                }
+            } while (!(1 <= crossover_n && crossover_n <= 7));
+            crossover = Crossover(crossover_n, 0.5f);
+
+            int mutation_n;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Choose mutation method:" +
+                    "\n[1] Flip Bit" +
+                    "\n[2] Reverse Sequence" +
+                    "\n[3] Twors" +
+                    "\n[4] Uniform");
+                try
+                {
+                    mutation_n = int.Parse(Console.ReadKey().KeyChar.ToString());
+                }
+                catch
+                {
+                    mutation_n = -1;
+                    continue;
+                }
+            } while (!(1 <= mutation_n && mutation_n <= 4));
+            mutation = Mutation(mutation_n);
+
+            int termination_n;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Choose termination method:" +
+                    "\n[1] Fitness Stagnation" +
+                    "\n[2] Generation Number" +
+                    "\n[3] Time Evolving" +
+                    "\n[4] Fitness Threshold");
+                try
+                {
+                    termination_n = int.Parse(Console.ReadKey().KeyChar.ToString());
+                }
+                catch
+                {
+                    termination_n = -1;
+                    continue;
+                }
+            } while (!(1 <= termination_n && termination_n <= 4));
+            termination = Termination(termination_n, 100);
+
+            Console.Clear();
         }
 
         private static ISelection Selection(int n, object x = null, object y = null)

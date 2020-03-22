@@ -27,22 +27,22 @@ namespace zad1
                  out ITermination termination);
 
             var chromosome = new FloatingPointChromosome(
-                new double[2 * 2].Fill(Int32.MinValue),
-                new double[2 * 2].Fill(Int32.MaxValue),
-                new int[2 * 2].Fill(2 * 8 * sizeof(Int32)),
-                new int[2 * 2].Fill(0));
+                new double[2 * names.Length].Fill(Int32.MinValue),
+                new double[2 * names.Length].Fill(Int32.MaxValue),
+                new int[2 * names.Length].Fill(2 * 8 * sizeof(Int32)),
+                new int[2 * names.Length].Fill(0));
             var population = new Population(50, 100, chromosome);
             var fitness = new FuncFitness(genotype =>
             {
-                var fc = genotype as FloatingPointChromosome;
+                var phenotype = (genotype as FloatingPointChromosome).ToFloatingPoints();
 
-                var phenotype = fc.ToFloatingPoints();
-                var x1 = phenotype[0];
-                var y1 = phenotype[1];
-                var x2 = phenotype[2];
-                var y2 = phenotype[3];
+                Argument[] elements = new Argument[names.Length];
+                for (int i = 0; i < elements.Length; i++)
+                {
+                    elements[i] = new Argument(names[i], phenotype[i]);
+                }
 
-                return Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(y2 - y1, 2));
+                return new Expression(expression, elements).calculate();
             });
 
             var geneticAlgorithm = new GeneticAlgorithm(population, fitness, selection, crossover, mutation)
@@ -62,17 +62,13 @@ namespace zad1
                     var phenotype = bestChromosome.ToFloatingPoints();
 
                     Console.WriteLine(
-                        "Generation {0, 3}:  ({1, 3}, {2, 3}),  ({3, 3}, {4, 3})\t= {5}",
-                        geneticAlgorithm.GenerationsNumber,
-                        phenotype[0],
-                        phenotype[1],
-                        phenotype[2],
-                        phenotype[3],
-                        bestFitness);
+                        "Generation {0, 4}:\t\t= {1}",
+                        geneticAlgorithm.GenerationsNumber, bestFitness);
                 }
             };
             geneticAlgorithm.Start();
 
+            Console.WriteLine("\nDone");
             Console.ReadKey();
         }
 

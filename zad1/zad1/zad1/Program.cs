@@ -8,6 +8,7 @@ using GeneticSharp.Domain.Selections;
 using GeneticSharp.Domain.Terminations;
 using org.mariuszgromada.math.mxparser;
 using System;
+using System.Runtime.InteropServices;
 
 namespace zad1
 {
@@ -19,18 +20,21 @@ namespace zad1
             //var crossover = Crossover(1, 0.5f);
             //var mutation = Mutation(1);
             //var termination = Termination(1, 100);
+
             Menu(out string[] names,
                  out string expression,
+                 out float lowerBound,
+                 out float upperBound,
                  out ISelection selection,
                  out ICrossover crossover,
                  out IMutation mutation,
                  out ITermination termination);
 
             var chromosome = new FloatingPointChromosome(
-                new double[2 * names.Length].Fill(Int32.MinValue),
-                new double[2 * names.Length].Fill(Int32.MaxValue),
-                new int[2 * names.Length].Fill(2 * 8 * sizeof(Int32)),
-                new int[2 * names.Length].Fill(0));
+                new double[names.Length * names.Length].Fill(lowerBound),
+                new double[names.Length * names.Length].Fill(upperBound),
+                new int[names.Length * names.Length].Fill(2 * 8 * Marshal.SizeOf(lowerBound)),
+                new int[names.Length * names.Length].Fill(0));
             var population = new Population(50, 100, chromosome);
             var fitness = new FuncFitness(genotype =>
             {
@@ -61,9 +65,21 @@ namespace zad1
                     latestFitness = bestFitness;
                     var phenotype = bestChromosome.ToFloatingPoints();
 
+                    var coords = "";
+                    for (int i = 0; i < names.Length; i++)
+                    {
+                        coords += "\n  " + names[i] + "\t";
+
+                        for (int j = i; j < names.Length + i; j++)
+                        {
+                            coords += phenotype[j] + ",\t";
+                        }
+
+                        coords = coords.TrimEnd(',', ' ', '\t');
+                    }
                     Console.WriteLine(
-                        "Generation {0, 4}:\t\t= {1}",
-                        geneticAlgorithm.GenerationsNumber, bestFitness);
+                        "Generation " + geneticAlgorithm.GenerationsNumber + " : \tbest fitness = " + bestFitness + coords
+                    );
                 }
             };
             geneticAlgorithm.Start();
@@ -74,6 +90,7 @@ namespace zad1
 
         private static void Menu(
             out string[] names, out string expression,
+            out float lowerBound, out float upperBound,
             out ISelection selection, out ICrossover crossover,
             out IMutation mutation, out ITermination termination)
         {
@@ -83,6 +100,24 @@ namespace zad1
 
             Console.WriteLine("\nEnter your expression:");
             expression = Console.ReadLine();
+
+            do
+            {
+                try
+                {
+                    Console.Write("\nEnter range:" +
+                        "\nlower bound = ");
+                    lowerBound = float.Parse(Console.ReadLine());
+                    Console.Write("\nupper bound = ");
+                    upperBound = float.Parse(Console.ReadLine());
+                }
+                catch
+                {
+                    lowerBound = 1;
+                    upperBound = -1;
+                }
+            } while (!(lowerBound < upperBound &&
+                       Int32.MinValue <= lowerBound && upperBound <= Int32.MaxValue));
 
             int selection_n;
             do
@@ -100,7 +135,6 @@ namespace zad1
                 catch
                 {
                     selection_n = -1;
-                    continue;
                 }
             } while (!(1 <= selection_n && selection_n <= 4));
             selection = Selection(selection_n);
@@ -124,7 +158,6 @@ namespace zad1
                 catch
                 {
                     crossover_n = -1;
-                    continue;
                 }
             } while (!(1 <= crossover_n && crossover_n <= 7));
             crossover = Crossover(crossover_n, 0.5f);
@@ -145,7 +178,6 @@ namespace zad1
                 catch
                 {
                     mutation_n = -1;
-                    continue;
                 }
             } while (!(1 <= mutation_n && mutation_n <= 4));
             mutation = Mutation(mutation_n);
@@ -166,7 +198,6 @@ namespace zad1
                 catch
                 {
                     termination_n = -1;
-                    continue;
                 }
             } while (!(1 <= termination_n && termination_n <= 4));
             termination = Termination(termination_n, 100);

@@ -31,10 +31,10 @@ namespace zad1
                  out ITermination termination);
 
             var chromosome = new FloatingPointChromosome(
-                new double[names.Length * names.Length].Fill(lowerBound),
-                new double[names.Length * names.Length].Fill(upperBound),
-                new int[names.Length * names.Length].Fill(2 * 8 * Marshal.SizeOf(lowerBound)),
-                new int[names.Length * names.Length].Fill(0));
+                new double[names.Length].Fill(lowerBound),
+                new double[names.Length].Fill(upperBound),
+                new int[names.Length].Fill(2 * 8 * Marshal.SizeOf(lowerBound)),
+                new int[names.Length].Fill(0));
             var population = new Population(50, 100, chromosome);
             var fitness = new FuncFitness(genotype =>
             {
@@ -68,12 +68,7 @@ namespace zad1
                     var coords = "";
                     for (int i = 0; i < names.Length; i++)
                     {
-                        coords += "\n  " + names[i] + "\t";
-
-                        for (int j = i; j < names.Length + i; j++)
-                        {
-                            coords += phenotype[j] + ",\t";
-                        }
+                        coords += "\n  " + names[i] + "\t" + phenotype[i] + ",\t";
 
                         coords = coords.TrimEnd(',', ' ', '\t');
                     }
@@ -108,7 +103,7 @@ namespace zad1
                     Console.Write("\nEnter range:" +
                         "\nlower bound = ");
                     lowerBound = float.Parse(Console.ReadLine());
-                    Console.Write("\nupper bound = ");
+                    Console.Write("upper bound = ");
                     upperBound = float.Parse(Console.ReadLine());
                 }
                 catch

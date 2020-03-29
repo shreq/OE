@@ -35,12 +35,17 @@ namespace zad1
                 Expression = parameters.Expression
             };
 
-            var geneticAlgorithm = new GeneticAlgorithm(population, fitness, parameters.Selection, parameters.Crossover, parameters.Mutation)
+            var geneticAlgorithm = new GeneticAlgorithm(population,
+                                                        fitness,
+                                                        parameters.Selection,
+                                                        parameters.Crossover,
+                                                        parameters.Mutation)
             {
                 Termination = parameters.Termination
             };
 
             var latestFitness = 0.0;
+            var previouslyBestFitness = 0.0;
             geneticAlgorithm.GenerationRan += (sender, e) =>
             {
                 var bestChromosome = geneticAlgorithm.BestChromosome as FloatingPointChromosome;
@@ -48,6 +53,7 @@ namespace zad1
 
                 if (bestFitness != latestFitness)
                 {
+                    previouslyBestFitness = latestFitness;
                     latestFitness = bestFitness;
                     var phenotype = bestChromosome.ToFloatingPoints();
 
@@ -61,6 +67,21 @@ namespace zad1
                     );
                 }
             };
+            geneticAlgorithm.GenerationRan += (sender, e) =>
+            {
+                var bestFitness = geneticAlgorithm.BestChromosome.Fitness.Value;
+
+                var epsilon = Math.Abs(0.9 * latestFitness);
+                if (Math.Abs(bestFitness - previouslyBestFitness) < epsilon &&
+                    geneticAlgorithm.Crossover is UniformCrossover)
+                {
+                    var mixProbability = (geneticAlgorithm.Crossover as UniformCrossover).MixProbability;
+                    geneticAlgorithm.Crossover = ParameterParser.ParserCrossover(1, (float)(0.9 * mixProbability));
+                    Console.WriteLine(epsilon + " :e\tp: " +
+                        (geneticAlgorithm.Crossover as UniformCrossover).MixProbability);
+                }
+            };
+
             geneticAlgorithm.Start();
 
             var latestCoords = "";
@@ -71,7 +92,7 @@ namespace zad1
             }
             Console.WriteLine("\n\n- - - Final result: - - -" +
                 "\nGeneration " + geneticAlgorithm.GenerationsNumber + " : \tfitness = " + latestFitness +
-                latestCoords + "\n\n  f(" + String.Join(", ", parameters.Names) + ") = " + (-latestFitness));
+                latestCoords + "\n\nf(" + String.Join(", ", parameters.Names) + ") = " + (-latestFitness));
 
             Console.ReadKey();
         }

@@ -18,17 +18,16 @@ namespace zad1
     {
         static void Main(string[] args)
         {
-            //var selection = Selection(1);
-            //var crossover = Crossover(1, 0.5f);
-            //var mutation = Mutation(1);
-            //var termination = Termination(1, 100);
+            const int NUMBER_OF_BITS = 2 * 8 * sizeof(float);
+
             ParameterSelection parameters = ConsoleParameterSelectionFactory.CreateSelection();
 
             var chromosome = new FloatingPointChromosome(
                 new double[parameters.Names.Length].Fill(parameters.LowerBound),
                 new double[parameters.Names.Length].Fill(parameters.UpperBound),
-                new int[parameters.Names.Length].Fill(2 * 8 * Marshal.SizeOf(parameters.LowerBound)),
-                new int[parameters.Names.Length].Fill(0));
+                new int[parameters.Names.Length].Fill(NUMBER_OF_BITS),
+                new int[parameters.Names.Length].Fill(0)
+            );
             var population = new Population(50, 100, chromosome);
             var fitness = new FunctionMinimumFitness()
             {
@@ -46,41 +45,22 @@ namespace zad1
             };
 
             geneticAlgorithm.GenerationRan += new ConsoleLogEventHandler(parameters.Names).Handle;
+
             var latestFitness = 0.0;
             var previouslyBestFitness = 0.0;
-            geneticAlgorithm.GenerationRan += (sender, e) =>
-            {
-                var bestChromosome = geneticAlgorithm.BestChromosome as FloatingPointChromosome;
-                var bestFitness = bestChromosome.Fitness.Value;
 
-                if (bestFitness != latestFitness)
-                {
-                    previouslyBestFitness = latestFitness;
-                    latestFitness = bestFitness;
-                    var phenotype = bestChromosome.ToFloatingPoints();
-
-                    var coords = "";
-                    for (int i = 0; i < parameters.Names.Length; i++)
-                    {
-                        coords += "\n  " + parameters.Names[i] + "\t" + phenotype[i];
-                    }
-                    Console.WriteLine(
-                        "Generation " + geneticAlgorithm.GenerationsNumber + " : \tbest fitness = " + bestFitness + coords
-                    );
-                }
-            };
             geneticAlgorithm.GenerationRan += (sender, e) =>
             {
                 var bestFitness = geneticAlgorithm.BestChromosome.Fitness.Value;
 
-                var epsilon = Math.Abs(0.9 * latestFitness);
+                var epsilon = Math.Abs(0.9 * bestFitness);
                 if (Math.Abs(bestFitness - previouslyBestFitness) < epsilon &&
                     geneticAlgorithm.Crossover is UniformCrossover)
                 {
                     var mixProbability = (geneticAlgorithm.Crossover as UniformCrossover).MixProbability;
                     geneticAlgorithm.Crossover = ParameterParser.ParserCrossover(1, (float)(0.9 * mixProbability));
-                    Console.WriteLine(epsilon + " :e\tp: " +
-                        (geneticAlgorithm.Crossover as UniformCrossover).MixProbability);
+
+
                 }
             };
 

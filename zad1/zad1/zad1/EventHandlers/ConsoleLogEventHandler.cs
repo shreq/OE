@@ -8,14 +8,14 @@ namespace zad1.EventHandlers
 {
     public class ConsoleLogEventHandler : IEventHandler
     {
+        public string[] FunctionValues { get; private set; }
+
+        private double latestFitness;
+
         public ConsoleLogEventHandler(string[] functionValues)
         {
             FunctionValues = functionValues;
         }
-
-        public string[] FunctionValues { get; private set; }
-
-        private double latestFitness;
 
         public void Handle(object sender, EventArgs e)
         {

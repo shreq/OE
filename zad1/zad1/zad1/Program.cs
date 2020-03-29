@@ -36,12 +36,53 @@ namespace zad1
                 Expression = parameters.Expression
             };
 
-            var geneticAlgorithm = new GeneticAlgorithm(population, fitness, parameters.Selection, parameters.Crossover, parameters.Mutation)
+            var geneticAlgorithm = new GeneticAlgorithm(population,
+                                                        fitness,
+                                                        parameters.Selection,
+                                                        parameters.Crossover,
+                                                        parameters.Mutation)
             {
                 Termination = parameters.Termination
             };
 
             geneticAlgorithm.GenerationRan += new ConsoleLogEventHandler(parameters.Names).Handle;
+            var latestFitness = 0.0;
+            var previouslyBestFitness = 0.0;
+            geneticAlgorithm.GenerationRan += (sender, e) =>
+            {
+                var bestChromosome = geneticAlgorithm.BestChromosome as FloatingPointChromosome;
+                var bestFitness = bestChromosome.Fitness.Value;
+
+                if (bestFitness != latestFitness)
+                {
+                    previouslyBestFitness = latestFitness;
+                    latestFitness = bestFitness;
+                    var phenotype = bestChromosome.ToFloatingPoints();
+
+                    var coords = "";
+                    for (int i = 0; i < parameters.Names.Length; i++)
+                    {
+                        coords += "\n  " + parameters.Names[i] + "\t" + phenotype[i];
+                    }
+                    Console.WriteLine(
+                        "Generation " + geneticAlgorithm.GenerationsNumber + " : \tbest fitness = " + bestFitness + coords
+                    );
+                }
+            };
+            geneticAlgorithm.GenerationRan += (sender, e) =>
+            {
+                var bestFitness = geneticAlgorithm.BestChromosome.Fitness.Value;
+
+                var epsilon = Math.Abs(0.9 * latestFitness);
+                if (Math.Abs(bestFitness - previouslyBestFitness) < epsilon &&
+                    geneticAlgorithm.Crossover is UniformCrossover)
+                {
+                    var mixProbability = (geneticAlgorithm.Crossover as UniformCrossover).MixProbability;
+                    geneticAlgorithm.Crossover = ParameterParser.ParserCrossover(1, (float)(0.9 * mixProbability));
+                    Console.WriteLine(epsilon + " :e\tp: " +
+                        (geneticAlgorithm.Crossover as UniformCrossover).MixProbability);
+                }
+            };
 
             geneticAlgorithm.Start();
 

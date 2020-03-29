@@ -14,6 +14,7 @@ namespace zad1.selection
         public string Expression { get; set; }
         public float LowerBound { get; set; }
         public float UpperBound { get; set; }
+        public bool AdaptiveOn {get; set; }
         public ISelection Selection { get; set; }
         public ICrossover Crossover { get; set; }
         public IMutation Mutation { get; set; }

@@ -19,6 +19,7 @@ namespace zad1.selection
             var bounds = GetBounds();
             float upperBound = bounds.upper;
             float lowerBound = bounds.lower;
+            bool adaptiveOn = isAdaptive();
             ISelection selection = GetSelection();
             ICrossover crossover = GetCrossover();
             IMutation mutation = GetMutation();
@@ -32,11 +33,35 @@ namespace zad1.selection
                 Expression = expression,
                 LowerBound = lowerBound,
                 UpperBound = upperBound,
+                AdaptiveOn = adaptiveOn,
                 Selection = selection,
                 Crossover = crossover,
                 Mutation = mutation,
                 Termination = termination
             };
+        }
+
+        private static bool isAdaptive()
+        {
+            int isAdaptive_n;
+
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Choose genetic algorithm variant" +
+                    "\n[1] Simple" +
+                    "\n[2] Adaptive");
+                try
+                {
+                    isAdaptive_n = int.Parse(Console.ReadKey().KeyChar.ToString());
+                }
+                catch
+                {
+                    isAdaptive_n = -1;
+                }
+            } while (!(1 <= isAdaptive_n && isAdaptive_n <= 2));
+
+            return false ? isAdaptive_n == 1 : true;
         }
 
         private static string[] GetNames()

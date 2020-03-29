@@ -21,7 +21,7 @@ namespace zad1
             //var crossover = Crossover(1, 0.5f);
             //var mutation = Mutation(1);
             //var termination = Termination(1, 100);
-            ParameterSelection parameters = ConsoleParameterSelectionFactory.createSelection();
+            ParameterSelection parameters = ConsoleParameterSelectionFactory.CreateSelection();
 
             var chromosome = new FloatingPointChromosome(
                 new double[parameters.Names.Length].Fill(parameters.LowerBound),
@@ -39,7 +39,13 @@ namespace zad1
                     elements[i] = new Argument(parameters.Names[i], phenotype[i]);
                 }
 
-                return new Expression(parameters.Expression, elements).calculate();
+                var result = new Expression(parameters.Expression, elements).calculate();
+                if (Double.IsNaN(result))
+                {
+                    throw new NotFiniteNumberException("Fitness is NaN. Check expression string");
+                }
+
+                return -result;
             });
 
             var geneticAlgorithm = new GeneticAlgorithm(population, fitness, parameters.Selection, parameters.Crossover, parameters.Mutation)
@@ -61,9 +67,7 @@ namespace zad1
                     var coords = "";
                     for (int i = 0; i < parameters.Names.Length; i++)
                     {
-                        coords += "\n  " + parameters.Names[i] + "\t" + phenotype[i] + ",\t";
-
-                        coords = coords.TrimEnd(',', ' ', '\t');
+                        coords += "\n  " + parameters.Names[i] + "\t" + phenotype[i];
                     }
                     Console.WriteLine(
                         "Generation " + geneticAlgorithm.GenerationsNumber + " : \tbest fitness = " + bestFitness + coords
@@ -72,7 +76,16 @@ namespace zad1
             };
             geneticAlgorithm.Start();
 
-            Console.WriteLine("\nDone");
+            var latestCoords = "";
+            var latestPhenotype = (geneticAlgorithm.BestChromosome as FloatingPointChromosome).ToFloatingPoints();
+            for (int i = 0; i < parameters.Names.Length; i++)
+            {
+                latestCoords += "\n  " + parameters.Names[i] + "\t" + latestPhenotype[i];
+            }
+            Console.WriteLine("\n\n- - - Final result: - - -" +
+                "\nGeneration " + geneticAlgorithm.GenerationsNumber + " : \tfitness = " + latestFitness +
+                latestCoords + "\n\n  f(" + String.Join(", ", parameters.Names) + ") = " + (-latestFitness));
+
             Console.ReadKey();
         }
     }

@@ -10,19 +10,19 @@ namespace zad1.selection
 {
     public class ConsoleParameterSelectionFactory
     {
-        public static ParameterSelection createSelection()
+        public static ParameterSelection CreateSelection()
         {
             Console.Clear();
 
-            string[] names = getNames();
-            string expression = getExpression();
-            var bounds = getBounds();
+            string[] names = GetNames();
+            string expression = GetExpression();
+            var bounds = GetBounds();
             float upperBound = bounds.upper;
             float lowerBound = bounds.lower;
-            ISelection selection = getSelection();
-            ICrossover crossover = getCrossover();
-            IMutation mutation = getMutation();
-            ITermination termination = getTermination();
+            ISelection selection = GetSelection();
+            ICrossover crossover = GetCrossover();
+            IMutation mutation = GetMutation();
+            ITermination termination = GetTermination();
 
             Console.Clear();
 
@@ -39,21 +39,22 @@ namespace zad1.selection
             };
         }
 
-        private static string[] getNames()
+        private static string[] GetNames()
         {
             Console.Write("Enter variable names separated by space:\t");
             return Console.ReadLine().Split(' ');
         }
 
-        private static string getExpression()
+        private static string GetExpression()
         {
             Console.WriteLine("\nEnter your expression:");
             return Console.ReadLine();
         }
 
-        private static (float lower, float upper) getBounds()
+        private static (float lower, float upper) GetBounds()
         {
             float lowerBound, upperBound;
+
             do
             {
                 try
@@ -75,9 +76,10 @@ namespace zad1.selection
             return (lower: lowerBound, upper: upperBound);
         }
 
-        private static ISelection getSelection()
+        private static ISelection GetSelection()
         {
             int selection_n;
+
             do
             {
                 Console.Clear();
@@ -95,12 +97,14 @@ namespace zad1.selection
                     selection_n = -1;
                 }
             } while (!(1 <= selection_n && selection_n <= 4));
-            return ParameterParser.parseSelection(selection_n);
+
+            return ParameterParser.ParseSelection(selection_n);
         }
 
-        private static ICrossover getCrossover()
+        private static ICrossover GetCrossover()
         {
             int crossover_n;
+
             do
             {
                 Console.Clear();
@@ -121,12 +125,14 @@ namespace zad1.selection
                     crossover_n = -1;
                 }
             } while (!(1 <= crossover_n && crossover_n <= 7));
-            return ParameterParser.parserCrossover(crossover_n, 0.5f);
+
+            return ParameterParser.ParserCrossover(crossover_n, 0.5f);
         }
 
-        private static IMutation getMutation()
+        private static IMutation GetMutation()
         {
             int mutation_n;
+
             do
             {
                 Console.Clear();
@@ -144,12 +150,14 @@ namespace zad1.selection
                     mutation_n = -1;
                 }
             } while (!(1 <= mutation_n && mutation_n <= 4));
-            return ParameterParser.parseMutation(mutation_n);
+
+            return ParameterParser.ParseMutation(mutation_n);
         }
 
-        private static ITermination getTermination()
+        private static ITermination GetTermination()
         {
             int termination_n;
+
             do
             {
                 Console.Clear();
@@ -167,7 +175,8 @@ namespace zad1.selection
                     termination_n = -1;
                 }
             } while (!(1 <= termination_n && termination_n <= 4));
-            return ParameterParser.parseTermination(termination_n, 100);
+
+            return ParameterParser.ParseTermination(termination_n, 100);
         }
     }
 }

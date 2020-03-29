@@ -8,7 +8,7 @@ namespace zad1.selection
 {
     class ParameterParser
     {
-        public static ISelection parseSelection(int n, object x = null, object y = null)
+        public static ISelection ParseSelection(int n, object x = null, object y = null)
         {
             switch (n)
             {
@@ -31,7 +31,7 @@ namespace zad1.selection
             }
         }
 
-        public static ICrossover parserCrossover(int n, object x = null) // TODO: check compatibility
+        public static ICrossover ParserCrossover(int n, object x = null) // TODO: check compatibility
         {
             switch (n)
             {
@@ -62,7 +62,7 @@ namespace zad1.selection
             }
         }
 
-        public static IMutation parseMutation(int n, object x = null)
+        public static IMutation ParseMutation(int n, object x = null)
         {
             switch (n)
             {
@@ -84,7 +84,7 @@ namespace zad1.selection
             }
         }
 
-        public static ITermination parseTermination(int n, object x = null)
+        public static ITermination ParseTermination(int n, object x = null)
         {
             switch (n)
             {

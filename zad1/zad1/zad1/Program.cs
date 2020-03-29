@@ -29,24 +29,11 @@ namespace zad1
                 new int[parameters.Names.Length].Fill(2 * 8 * Marshal.SizeOf(parameters.LowerBound)),
                 new int[parameters.Names.Length].Fill(0));
             var population = new Population(50, 100, chromosome);
-            var fitness = new FuncFitness(genotype =>
+            var fitness = new FunctionMinimumFitness()
             {
-                var phenotype = (genotype as FloatingPointChromosome).ToFloatingPoints();
-
-                Argument[] elements = new Argument[parameters.Names.Length];
-                for (int i = 0; i < elements.Length; i++)
-                {
-                    elements[i] = new Argument(parameters.Names[i], phenotype[i]);
-                }
-
-                var result = new Expression(parameters.Expression, elements).calculate();
-                if (Double.IsNaN(result))
-                {
-                    throw new NotFiniteNumberException("Fitness is NaN. Check expression string");
-                }
-
-                return -result;
-            });
+                FunctionVariables = parameters.Names,
+                Expression = parameters.Expression
+            };
 
             var geneticAlgorithm = new GeneticAlgorithm(population, fitness, parameters.Selection, parameters.Crossover, parameters.Mutation)
             {

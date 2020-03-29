@@ -21,7 +21,7 @@ namespace zad1
             //var crossover = Crossover(1, 0.5f);
             //var mutation = Mutation(1);
             //var termination = Termination(1, 100);
-            ParameterSelection parameters = ConsoleParameterSelectionFactory.getSelection();
+            ParameterSelection parameters = ConsoleParameterSelectionFactory.createSelection();
 
             var chromosome = new FloatingPointChromosome(
                 new double[parameters.Names.Length].Fill(parameters.LowerBound),

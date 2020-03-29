@@ -62,7 +62,7 @@ namespace zad1.selection
             }
         }
 
-        public static IMutation ParseMutation(int n, object x = null)
+        public static IMutation ParseMutation(int n)
         {
             switch (n)
             {
@@ -73,12 +73,7 @@ namespace zad1.selection
                 case 3:
                     return new TworsMutation();
                 case 4:
-                    if (x is int[])
-                        return new UniformMutation((int[])x);
-                    else if (x is bool)
-                        return new UniformMutation((bool)x);
-                    else
-                        return new UniformMutation();
+                    return CustomUniformMutation.Create();
                 default:
                     throw new ArgumentException();
             }

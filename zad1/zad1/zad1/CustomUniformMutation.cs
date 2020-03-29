@@ -9,6 +9,8 @@ namespace zad1
 {
     public class CustomUniformMutation : UniformMutation
     {
+        const int NUMBER_OF_BITS = 2 * 8 * sizeof(float);
+
         int[] MutableGenesIndexes { get; set; }
 
         private CustomUniformMutation(int[] mutableGenesIndexes) : base(mutableGenesIndexes) 
@@ -31,9 +33,9 @@ namespace zad1
         }
 
 
-        public static CustomUniformMutation Create(int numberOfBits)
+        public static CustomUniformMutation Create()
         {
-            int[] mutableGenesIndexes = RandomizationProvider.Current.GetInts(numberOfBits, 0, 1);
+            int[] mutableGenesIndexes = RandomizationProvider.Current.GetInts(NUMBER_OF_BITS, 0, 1);
             return new CustomUniformMutation(mutableGenesIndexes);
         }
     }

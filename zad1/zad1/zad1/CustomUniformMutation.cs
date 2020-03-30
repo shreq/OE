@@ -1,5 +1,8 @@
 ﻿using GeneticSharp.Domain.Mutations;
 using GeneticSharp.Domain.Randomizations;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace zad1
 {
@@ -8,6 +11,8 @@ namespace zad1
         const int NUMBER_OF_BITS = 2 * 8 * sizeof(float);
 
         int[] MutableGenesIndexes { get; set; }
+
+        private static Random rand = new Random();
 
         private CustomUniformMutation(int[] mutableGenesIndexes) : base(mutableGenesIndexes)
         {
@@ -30,8 +35,13 @@ namespace zad1
 
         public static CustomUniformMutation Create()
         {
-            int[] mutableGenesIndexes = RandomizationProvider.Current.GetInts(NUMBER_OF_BITS, 0, 1);
-            return new CustomUniformMutation(mutableGenesIndexes);
+            IEnumerable<int> mutableGenesIndexes = from bit in Enumerable.Range(0, NUMBER_OF_BITS) select RandomInt();
+            return new CustomUniformMutation(mutableGenesIndexes.ToArray());
+        }
+
+        private static int RandomInt()
+        {
+            return Convert.ToInt32(rand.NextDouble() >= 0.5);
         }
     }
 }

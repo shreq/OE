@@ -27,7 +27,7 @@ namespace zad1.selection
 
             return new ParameterSelection
             {
-                Names = names,
+                Variables = names,
                 Expression = expression,
                 LowerBound = lowerBound,
                 UpperBound = upperBound,

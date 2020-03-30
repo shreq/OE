@@ -10,48 +10,57 @@ namespace zad1
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main(string[] _)
         {
             const int NUMBER_OF_BITS = 2 * 8 * sizeof(float);
 
             ParameterSelection parameters = ConsoleParameterSelectionFactory.CreateSelection();
 
             var chromosome = new FloatingPointChromosome(
-                new double[parameters.Names.Length].Fill(parameters.LowerBound),
-                new double[parameters.Names.Length].Fill(parameters.UpperBound),
-                new int[parameters.Names.Length].Fill(NUMBER_OF_BITS),
-                new int[parameters.Names.Length].Fill(0)
+                new double[parameters.Variables.Length].Fill(parameters.LowerBound),
+                new double[parameters.Variables.Length].Fill(parameters.UpperBound),
+                new int[parameters.Variables.Length].Fill(NUMBER_OF_BITS),
+                new int[parameters.Variables.Length].Fill(0)
             );
+
             var population = new Population(50, 100, chromosome);
+            
             var fitness = new FunctionMinimumFitness()
             {
-                FunctionVariables = parameters.Names,
+                FunctionVariables = parameters.Variables,
                 Expression = parameters.Expression
             };
 
-            var geneticAlgorithm = new GeneticAlgorithm(population, fitness, parameters.Selection,
-                                                        parameters.Crossover, parameters.Mutation)
+            var geneticAlgorithm = new GeneticAlgorithm(population, fitness, parameters.Selection, parameters.Crossover, parameters.Mutation)
             {
                 Termination = parameters.Termination
             };
 
-            geneticAlgorithm.GenerationRan += new ConsoleLogEventHandler(parameters.Names).Handle;
+            geneticAlgorithm.GenerationRan += new ConsoleLogEventHandler(parameters.Variables).Handle;
 
-            geneticAlgorithm.GenerationRan += new AdaptiveStrategyEventHandler().Handle;
+            if(parameters.AdaptiveOn)
+            {
+                geneticAlgorithm.GenerationRan += new AdaptiveStrategyEventHandler().Handle;
+            }
 
             geneticAlgorithm.Start();
+            
+            var finalPhenotype = (geneticAlgorithm.BestChromosome as FloatingPointChromosome).ToFloatingPoints();
 
-
-            var latestCoords = "";
-            var latestPhenotype = (geneticAlgorithm.BestChromosome as FloatingPointChromosome).ToFloatingPoints();
-            for (int i = 0; i < parameters.Names.Length; i++)
+            var finalVariableValues = "Parameters:";
+            for (int i = 0; i < parameters.Variables.Length; i++)
             {
-                latestCoords += "\n  " + parameters.Names[i] + "\t" + latestPhenotype[i];
+                finalVariableValues += "\n" + parameters.Variables[i] + " = " + finalPhenotype[i];
             }
+
+            var finalFitness = (geneticAlgorithm.BestChromosome as FloatingPointChromosome).Fitness.Value;
+
             Console.WriteLine("\n\n- - - Final result: - - -" +
-                "\nGeneration " + geneticAlgorithm.GenerationsNumber + " : \tfitness = " + latestFitness +
-                latestCoords + "\n\nrange: " + parameters.LowerBound + ", " + parameters.UpperBound +
-                "\n\nf(" + String.Join(", ", parameters.Names) + ") = " + parameters.Expression + " = " + (-latestFitness));
+                "\nNumber of generations: " + geneticAlgorithm.GenerationsNumber +
+                "\n\nFitness: " + finalFitness +
+                "\n\n" + finalVariableValues + 
+                "\n\nRange: " + parameters.LowerBound + ", " + parameters.UpperBound +
+                "\n\nf(" + String.Join(", ", parameters.Variables) + ") = " + parameters.Expression + " = " + (-finalFitness));
 
             Console.ReadKey();
         }

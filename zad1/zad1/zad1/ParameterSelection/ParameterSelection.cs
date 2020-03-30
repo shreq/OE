@@ -10,7 +10,7 @@ namespace zad1.selection
 {
     public class ParameterSelection
     {
-        public string[] Names { get; set; }
+        public string[] Variables { get; set; }
         public string Expression { get; set; }
         public float LowerBound { get; set; }
         public float UpperBound { get; set; }

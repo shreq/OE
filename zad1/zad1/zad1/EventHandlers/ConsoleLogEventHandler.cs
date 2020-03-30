@@ -8,7 +8,7 @@ namespace zad1.EventHandlers
     {
         public string[] FunctionValues { get; private set; }
 
-        private double latestFitness;
+        private double latestFitness = 0.0;
 
         public ConsoleLogEventHandler(string[] functionValues)
         {

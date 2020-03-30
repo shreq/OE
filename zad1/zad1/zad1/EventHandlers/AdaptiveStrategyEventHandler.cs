@@ -16,7 +16,7 @@ namespace zad1.EventHandlers
             var bestFitness = geneticAlgorithm.BestChromosome.Fitness.Value;
 
             var epsilon = Math.Abs(0.9 * bestFitness);
-            if (Math.Abs(bestFitness - previouslyBestFitness) < epsilon)
+            if (bestFitness != previouslyBestFitness && Math.Abs(bestFitness - previouslyBestFitness) < epsilon)
             {
                 if (geneticAlgorithm.Crossover is UniformCrossover)
                 {

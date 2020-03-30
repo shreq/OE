@@ -35,32 +35,12 @@ namespace zad1
                 Termination = parameters.Termination
             };
 
-            var latestFitness = 0.0;
-            var previouslyBestFitness = 0.0;
-
             geneticAlgorithm.GenerationRan += new ConsoleLogEventHandler(parameters.Names).Handle;
 
-            geneticAlgorithm.GenerationRan += (sender, e) =>
-            {
-                var bestFitness = geneticAlgorithm.BestChromosome.Fitness.Value;
-
-                var epsilon = Math.Abs(0.9 * bestFitness);
-                if (Math.Abs(bestFitness - previouslyBestFitness) < epsilon)
-                {
-                    if (geneticAlgorithm.Crossover is UniformCrossover)
-                    {
-                        var mixProbability = (geneticAlgorithm.Crossover as UniformCrossover).MixProbability;
-                        geneticAlgorithm.Crossover = ParameterParser.ParserCrossover(1, (float)(0.9 * mixProbability));
-                    }
-
-                    if (geneticAlgorithm.Mutation is CustomUniformMutation)
-                    {
-                        geneticAlgorithm.Mutation = (geneticAlgorithm.Mutation as CustomUniformMutation).GenerateAdaptedMutation();
-                    }
-                }
-            };
+            geneticAlgorithm.GenerationRan += new AdaptiveStrategyEventHandler().Handle;
 
             geneticAlgorithm.Start();
+
 
             var latestCoords = "";
             var latestPhenotype = (geneticAlgorithm.BestChromosome as FloatingPointChromosome).ToFloatingPoints();

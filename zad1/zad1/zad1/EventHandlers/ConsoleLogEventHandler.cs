@@ -1,8 +1,6 @@
 ﻿using GeneticSharp.Domain;
 using GeneticSharp.Domain.Chromosomes;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace zad1.EventHandlers
 {
@@ -35,7 +33,8 @@ namespace zad1.EventHandlers
                 }
 
                 Console.WriteLine(
-                    "\n[Generation " + geneticAlgorithm.GenerationsNumber + "] \nBest fitness = " + bestFitness + coords
+                    "\n[Generation " + geneticAlgorithm.GenerationsNumber + "]" +
+                    "\nBest fitness = " + bestFitness + coords
                 );
             }
         }

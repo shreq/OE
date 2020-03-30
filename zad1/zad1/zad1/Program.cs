@@ -1,14 +1,8 @@
 ﻿using GeneticSharp.Domain;
 using GeneticSharp.Domain.Chromosomes;
 using GeneticSharp.Domain.Crossovers;
-using GeneticSharp.Domain.Fitnesses;
-using GeneticSharp.Domain.Mutations;
 using GeneticSharp.Domain.Populations;
-using GeneticSharp.Domain.Selections;
-using GeneticSharp.Domain.Terminations;
-using org.mariuszgromada.math.mxparser;
 using System;
-using System.Runtime.InteropServices;
 using zad1.EventHandlers;
 using zad1.selection;
 
@@ -35,19 +29,16 @@ namespace zad1
                 Expression = parameters.Expression
             };
 
-            var geneticAlgorithm = new GeneticAlgorithm(population,
-                                                        fitness,
-                                                        parameters.Selection,
-                                                        parameters.Crossover,
-                                                        parameters.Mutation)
+            var geneticAlgorithm = new GeneticAlgorithm(population, fitness, parameters.Selection,
+                                                        parameters.Crossover, parameters.Mutation)
             {
                 Termination = parameters.Termination
             };
 
-            geneticAlgorithm.GenerationRan += new ConsoleLogEventHandler(parameters.Names).Handle;
-
             var latestFitness = 0.0;
             var previouslyBestFitness = 0.0;
+
+            geneticAlgorithm.GenerationRan += new ConsoleLogEventHandler(parameters.Names).Handle;
 
             geneticAlgorithm.GenerationRan += (sender, e) =>
             {
@@ -66,7 +57,6 @@ namespace zad1
                     {
                         geneticAlgorithm.Mutation = (geneticAlgorithm.Mutation as CustomUniformMutation).GenerateAdaptedMutation();
                     }
-
                 }
             };
 
@@ -80,7 +70,8 @@ namespace zad1
             }
             Console.WriteLine("\n\n- - - Final result: - - -" +
                 "\nGeneration " + geneticAlgorithm.GenerationsNumber + " : \tfitness = " + latestFitness +
-                latestCoords + "\n\n  f(" + String.Join(", ", parameters.Names) + ") = " + (-latestFitness));
+                latestCoords + "\n\nrange: " + parameters.LowerBound + ", " + parameters.UpperBound +
+                "\n\nf(" + String.Join(", ", parameters.Names) + ") = " + parameters.Expression + " = " + (-latestFitness));
 
             Console.ReadKey();
         }

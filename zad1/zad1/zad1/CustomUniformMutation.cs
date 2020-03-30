@@ -1,9 +1,5 @@
-﻿using GeneticSharp.Domain.Crossovers;
-using GeneticSharp.Domain.Mutations;
+﻿using GeneticSharp.Domain.Mutations;
 using GeneticSharp.Domain.Randomizations;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace zad1
 {
@@ -13,16 +9,16 @@ namespace zad1
 
         int[] MutableGenesIndexes { get; set; }
 
-        private CustomUniformMutation(int[] mutableGenesIndexes) : base(mutableGenesIndexes) 
+        private CustomUniformMutation(int[] mutableGenesIndexes) : base(mutableGenesIndexes)
         {
             MutableGenesIndexes = mutableGenesIndexes;
         }
 
         public CustomUniformMutation GenerateAdaptedMutation()
         {
-            for(int i=0; i < MutableGenesIndexes.Length; i++)
+            for (int i = 0; i < MutableGenesIndexes.Length; i++)
             {
-                if(MutableGenesIndexes[i] == 1)
+                if (MutableGenesIndexes[i] == 1)
                 {
                     MutableGenesIndexes[i] = 0;
                     break;
@@ -31,7 +27,6 @@ namespace zad1
 
             return new CustomUniformMutation(MutableGenesIndexes);
         }
-
 
         public static CustomUniformMutation Create()
         {

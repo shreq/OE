@@ -3,6 +3,7 @@ using GeneticSharp.Domain.Chromosomes;
 using GeneticSharp.Domain.Crossovers;
 using GeneticSharp.Domain.Populations;
 using System;
+using System.IO;
 using zad1.EventHandlers;
 using zad1.selection;
 
@@ -35,6 +36,13 @@ namespace zad1
             {
                 Termination = parameters.Termination
             };
+
+            var filepath = "./results_" + (parameters.AdaptiveOn ? "AGA" : "SGA") +
+                "_" + parameters.Selection.GetType().Name +
+                "_" + parameters.Crossover.GetType().Name +
+                "_" + parameters.Mutation.GetType().Name +
+                "_" + parameters.Termination.GetType().Name + ".csv";
+            geneticAlgorithm.GenerationRan += new WriterEventHandler(filepath).Handle;
 
             geneticAlgorithm.GenerationRan += new ConsoleLogEventHandler(parameters.Variables).Handle;
 

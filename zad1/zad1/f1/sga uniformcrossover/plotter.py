@@ -4,7 +4,7 @@ from matplotlib import pyplot
 
 data = []
 #names = ["OnePoint", "ThreeParent", "Uniform"]
-names = ["CustomUniform", "FlipBit", "ReverseSequence", "Twors"]
+names = ["0.0", "0.2", "0.4", "0.6", "0.8", "1.0"]
 
 for i, filepath in zip(range(len(argv[1:])), argv[1:]):
     data.append(pandas.read_csv(filepath, names=[names[i]]))
@@ -17,5 +17,5 @@ for d in data:
 pyplot.xlabel("generacja")
 pyplot.ylabel("przystosowanie")
 pyplot.legend()
-pyplot.savefig("aga_crossover")
+pyplot.savefig("sga_uniformcrossover")
 pyplot.show()

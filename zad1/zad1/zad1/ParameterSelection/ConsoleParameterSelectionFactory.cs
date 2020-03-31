@@ -47,23 +47,19 @@ namespace zad1.selection
             string expression = GetFixedExpression();
             float upperBound = 100;
             float lowerBound = -100;
+            ITermination termination = new TimeEvolvingTermination();
             if (expression.Equals("-cos(x)*cos(y)*exp((-x-pi)^2 - (-y-pi)^2)"))
             {
                 lowerBound = -10;
                 upperBound = 10;
+                termination = new FitnessStagnationTermination();
             }
-            bool adaptiveOn = IsAdaptive();
+            //bool adaptiveOn = IsAdaptive();
+            bool adaptiveOn = false;
             ISelection selection = new EliteSelection();
-            ICrossover crossover = new UniformCrossover();
-            IMutation mutation = CustomUniformMutation.Create();
-
-            if (adaptiveOn)
-            {
-                crossover = new UniformCrossover();
-                mutation = CustomUniformMutation.Create();
-            }
-
-            ITermination termination = GetTermination();
+            ICrossover crossover = new UniformCrossover(1f);
+            //IMutation mutation = CustomUniformMutation.Create();
+            IMutation mutation = new ReverseSequenceMutation();
 
             Console.Clear();
 

@@ -17,7 +17,7 @@ namespace zad1.selection
             var bounds = GetBounds();
             float upperBound = bounds.upper;
             float lowerBound = bounds.lower;
-            bool adaptiveOn = isAdaptive();
+            bool adaptiveOn = IsAdaptive();
             ISelection selection = GetSelection();
             ICrossover crossover = GetCrossover();
             IMutation mutation = GetMutation();
@@ -39,7 +39,7 @@ namespace zad1.selection
             };
         }
 
-        private static bool isAdaptive()
+        private static bool IsAdaptive()
         {
             int isAdaptive_n;
 
@@ -134,9 +134,7 @@ namespace zad1.selection
                 Console.WriteLine("Choose crossover method:" +
                     "\n[1] Uniform" +
                     "\n[2] One Point" +
-                    "\n[3] Partially Mapped" +
-                    "\n[4] Postition Based" +
-                    "\n[5] Three Parent");
+                    "\n[3] Three Parent");
                 try
                 {
                     crossover_n = int.Parse(Console.ReadKey().KeyChar.ToString());
@@ -145,7 +143,7 @@ namespace zad1.selection
                 {
                     crossover_n = -1;
                 }
-            } while (!(1 <= crossover_n && crossover_n <= 5));
+            } while (!(1 <= crossover_n && crossover_n <= 3));
 
             return ParameterParser.ParserCrossover(crossover_n, 0.5f);
         }
@@ -185,8 +183,7 @@ namespace zad1.selection
                 Console.WriteLine("Choose termination method:" +
                     "\n[1] Fitness Stagnation" +
                     "\n[2] Generation Number" +
-                    "\n[3] Time Evolving" +
-                    "\n[4] Fitness Threshold");
+                    "\n[3] Time Evolving");
                 try
                 {
                     termination_n = int.Parse(Console.ReadKey().KeyChar.ToString());
@@ -195,7 +192,7 @@ namespace zad1.selection
                 {
                     termination_n = -1;
                 }
-            } while (!(1 <= termination_n && termination_n <= 4));
+            } while (!(1 <= termination_n && termination_n <= 3));
 
             return ParameterParser.ParseTermination(termination_n, 100);
         }

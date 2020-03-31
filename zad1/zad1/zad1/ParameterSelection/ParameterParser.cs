@@ -31,7 +31,7 @@ namespace zad1.selection
             }
         }
 
-        public static ICrossover ParserCrossover(int n, object x = null) // TODO: check compatibility
+        public static ICrossover ParserCrossover(int n, object x = null)
         {
             switch (n)
             {
@@ -46,13 +46,7 @@ namespace zad1.selection
                     else
                         return new OnePointCrossover();
                 case 3:
-                    return new PartiallyMappedCrossover();
-                case 4:
-                    return new PositionBasedCrossover();
-                case 5:
                     return new ThreeParentCrossover();
-                //return new OrderedCrossover();
-                //return new OrderBasedCrossover();
                 default:
                     throw new ArgumentException();
             }
@@ -94,11 +88,6 @@ namespace zad1.selection
                         return new TimeEvolvingTermination((TimeSpan)x);
                     else
                         return new TimeEvolvingTermination();
-                case 4:
-                    if (x is double)
-                        return new FitnessThresholdTermination((double)x);
-                    else
-                        return new FitnessThresholdTermination();
                 default:
                     throw new ArgumentException();
             }

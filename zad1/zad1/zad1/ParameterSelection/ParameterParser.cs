@@ -41,19 +41,15 @@ namespace zad1.selection
                     else
                         return new UniformCrossover();
                 case 2:
-                    return new CutAndSpliceCrossover();
-                case 3:
-                    return new CycleCrossover();
-                case 4:
                     if (x is int)
                         return new OnePointCrossover((int)x);
                     else
                         return new OnePointCrossover();
-                case 5:
+                case 3:
                     return new PartiallyMappedCrossover();
-                case 6:
+                case 4:
                     return new PositionBasedCrossover();
-                case 7:
+                case 5:
                     return new ThreeParentCrossover();
                 //return new OrderedCrossover();
                 //return new OrderBasedCrossover();

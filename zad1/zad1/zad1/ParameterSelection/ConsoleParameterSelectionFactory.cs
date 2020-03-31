@@ -133,12 +133,10 @@ namespace zad1.selection
                 Console.Clear();
                 Console.WriteLine("Choose crossover method:" +
                     "\n[1] Uniform" +
-                    "\n[2] Cut and Splice" +
-                    "\n[3] Cycle" +
-                    "\n[4] One Point" +
-                    "\n[5] Partially Mapped" +
-                    "\n[6] Postition Based" +
-                    "\n[7] Three Parent");
+                    "\n[2] One Point" +
+                    "\n[3] Partially Mapped" +
+                    "\n[4] Postition Based" +
+                    "\n[5] Three Parent");
                 try
                 {
                     crossover_n = int.Parse(Console.ReadKey().KeyChar.ToString());
@@ -147,7 +145,7 @@ namespace zad1.selection
                 {
                     crossover_n = -1;
                 }
-            } while (!(1 <= crossover_n && crossover_n <= 7));
+            } while (!(1 <= crossover_n && crossover_n <= 5));
 
             return ParameterParser.ParserCrossover(crossover_n, 0.5f);
         }

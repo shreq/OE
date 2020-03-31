@@ -39,6 +39,71 @@ namespace zad1.selection
             };
         }
 
+        public static ParameterSelection CreateTestSelection()
+        {
+            Console.Clear();
+
+            string[] names = new string[] { "x", "y" };
+            string expression = GetFixedExpression();
+            float upperBound = 100;
+            float lowerBound = -100;
+            if (expression.Equals("-cos(x)*cos(y)*exp((-x-pi)^2 - (-y-pi)^2)"))
+            {
+                lowerBound = -10;
+                upperBound = 10;
+            }
+            bool adaptiveOn = IsAdaptive();
+            ISelection selection = new EliteSelection();
+            ICrossover crossover = new UniformCrossover();
+            IMutation mutation = CustomUniformMutation.Create();
+
+            if (adaptiveOn)
+            {
+                crossover = new UniformCrossover();
+                mutation = CustomUniformMutation.Create();
+            }
+
+            ITermination termination = GetTermination();
+
+            Console.Clear();
+
+            return new ParameterSelection
+            {
+                Variables = names,
+                Expression = expression,
+                LowerBound = lowerBound,
+                UpperBound = upperBound,
+                AdaptiveOn = adaptiveOn,
+                Selection = selection,
+                Crossover = crossover,
+                Mutation = mutation,
+                Termination = termination
+            };
+        }
+
+        private static string GetFixedExpression()
+        {
+            int selection_n;
+
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Choose function" +
+                    "\n[1] -cos(x)*cos(y)*exp((-x-pi)^2 - (-y-pi)^2)" +
+                    "\n[2] 0.5 + ((sin(sqrt(x^2+y^2)))^2 - 0.5) / (1+0.001*(x^2+y^2))^2");
+                try
+                {
+                    selection_n = int.Parse(Console.ReadKey().KeyChar.ToString());
+                }
+                catch
+                {
+                    selection_n = -1;
+                }
+            } while (!(1 <= selection_n && selection_n <= 2));
+
+            return selection_n == 1 ? "-cos(x)*cos(y)*exp((-x-pi)^2 - (-y-pi)^2)" : "0.5 + ((sin(sqrt(x^2+y^2)))^2 - 0.5) / (1+0.001*(x^2+y^2))^2";
+        }
+
         private static bool IsAdaptive()
         {
             int isAdaptive_n;
@@ -59,7 +124,7 @@ namespace zad1.selection
                 }
             } while (!(1 <= isAdaptive_n && isAdaptive_n <= 2));
 
-            return false ? isAdaptive_n == 1 : true;
+            return isAdaptive_n == 1 ? false : true;
         }
 
         private static string[] GetNames()

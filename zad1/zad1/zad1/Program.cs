@@ -15,7 +15,7 @@ namespace zad1
         {
             const int NUMBER_OF_BITS = 2 * 8 * sizeof(float);
 
-            ParameterSelection parameters = ConsoleParameterSelectionFactory.CreateSelection();
+            ParameterSelection parameters = ConsoleParameterSelectionFactory.CreateTestSelection();
 
             var chromosome = new FloatingPointChromosome(
                 new double[parameters.Variables.Length].Fill(parameters.LowerBound),

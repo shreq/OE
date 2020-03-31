@@ -25,7 +25,7 @@ namespace zad1.EventHandlers
 
             File.AppendAllText(
                 Filepath, bestFitness.ToString(
-                    "0.000", System.Globalization.CultureInfo.InvariantCulture) + '\n');
+                    "0.0000000000000", System.Globalization.CultureInfo.InvariantCulture) + '\n');
         }
     }
 }

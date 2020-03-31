@@ -20,11 +20,11 @@ namespace zad1
                 new double[parameters.Variables.Length].Fill(parameters.LowerBound),
                 new double[parameters.Variables.Length].Fill(parameters.UpperBound),
                 new int[parameters.Variables.Length].Fill(NUMBER_OF_BITS),
-                new int[parameters.Variables.Length].Fill(0)
+                new int[parameters.Variables.Length].Fill(2)
             );
 
             var population = new Population(50, 100, chromosome);
-            
+
             var fitness = new FunctionMinimumFitness()
             {
                 FunctionVariables = parameters.Variables,
@@ -38,13 +38,13 @@ namespace zad1
 
             geneticAlgorithm.GenerationRan += new ConsoleLogEventHandler(parameters.Variables).Handle;
 
-            if(parameters.AdaptiveOn)
+            if (parameters.AdaptiveOn)
             {
                 geneticAlgorithm.GenerationRan += new AdaptiveStrategyEventHandler().Handle;
             }
 
             geneticAlgorithm.Start();
-            
+
             var finalPhenotype = (geneticAlgorithm.BestChromosome as FloatingPointChromosome).ToFloatingPoints();
 
             var finalVariableValues = "Parameters:";
@@ -58,7 +58,7 @@ namespace zad1
             Console.WriteLine("\n\n- - - Final result: - - -" +
                 "\nNumber of generations: " + geneticAlgorithm.GenerationsNumber +
                 "\n\nFitness: " + finalFitness +
-                "\n\n" + finalVariableValues + 
+                "\n\n" + finalVariableValues +
                 "\n\nRange: " + parameters.LowerBound + ", " + parameters.UpperBound +
                 "\n\nf(" + String.Join(", ", parameters.Variables) + ") = " + parameters.Expression + " = " + (-finalFitness));
 

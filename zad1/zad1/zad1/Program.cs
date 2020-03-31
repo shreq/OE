@@ -23,7 +23,7 @@ namespace zad1
                 new int[parameters.Variables.Length].Fill(2)
             );
 
-            var population = new Population(50, 100, chromosome);
+            var population = new Population(50, 50, chromosome);
 
             var fitness = new FunctionMinimumFitness()
             {
@@ -60,7 +60,8 @@ namespace zad1
                 "\n\nFitness: " + finalFitness +
                 "\n\n" + finalVariableValues +
                 "\n\nRange: " + parameters.LowerBound + ", " + parameters.UpperBound +
-                "\n\nf(" + String.Join(", ", parameters.Variables) + ") = " + parameters.Expression + " = " + (-finalFitness));
+                "\n\nf(" + String.Join(", ", parameters.Variables) + ") = " + parameters.Expression +
+                " = " + (-finalFitness));
 
             Console.ReadKey();
         }

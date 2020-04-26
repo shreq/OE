@@ -3,6 +3,8 @@ from platypus import ZDT1, ZDT2, ZDT3, ZDT4, ZDT5, ZDT6
 from platypus.operators import UniformMutation
 from platypus.algorithms import NSGAII, IBEA, EpsMOEA, SPEA2, GDE3, EpsNSGAII
 
+from pymoo.factory import get_problem
+
 from argument_parser import ArgumentParser
 
 
@@ -44,12 +46,15 @@ algorithm = {
 
 algorithm.run(args.get_n_generations())
 
+pareto = get_problem(args.get_problem()).pareto_front()
+
 figure = pyplot.figure()
 ax = figure.add_subplot()
 ax.scatter(
     [s.objectives[0] for s in algorithm.result],
     [s.objectives[1] for s in algorithm.result]
 )
+ax.scatter(pareto[:, 0], pareto[:, 1])
 
 pyplot.savefig(
     'pic',

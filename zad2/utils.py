@@ -14,3 +14,5 @@ def stringify(dict_):
 
 def stringify1line(iterable):
     return '[ %s ]' % ' | '.join(iterable)
+
+

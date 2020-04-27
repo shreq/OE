@@ -1,7 +1,7 @@
 import argparse
 import sys
 
-from utils import clear, stringify
+from utils import stringify
 
 algorithms = {
     1: 'nsga2',
@@ -59,7 +59,6 @@ class ArgumentParser:
     def get_algorithm(self):
         while self.args['algorithm'] is None or \
                 self.args['algorithm'] < 1 or 3 < self.args['algorithm']:
-            clear()
             try:
                 self.args['algorithm'] = int(input(
                     'Select algorithm:\n' +
@@ -71,13 +70,12 @@ class ArgumentParser:
                 sys.exit(0)
             except ValueError:
                 continue
-        clear()
+        print("\n")
         return algorithms[self.args['algorithm']]
 
     def get_problem(self):
         while self.args['problem'] is None or \
                 self.args['problem'] < 1 or 4 < self.args['problem']:
-            clear()
             try:
                 self.args['problem'] = int(input(
                     'Select problem:\n' +
@@ -89,7 +87,7 @@ class ArgumentParser:
                 sys.exit(0)
             except ValueError:
                 continue
-        clear()
+        print("\n")
         return problems[self.args['problem']]
 
     def get_n_generations(self):

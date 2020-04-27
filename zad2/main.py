@@ -1,9 +1,10 @@
+import numpy
 from matplotlib import pyplot
 from platypus import ZDT1, ZDT2, ZDT3, ZDT4, ZDT5, ZDT6
 from platypus.algorithms import NSGAII, IBEA, SPEA2, GDE3
 from platypus.operators import UniformMutation
 from platypus.core import nondominated
-from pymoo.factory import get_problem
+from pymoo.factory import get_problem, get_performance_indicator
 from scipy.interpolate import interp1d
 from sklearn.metrics import mean_squared_error
 
@@ -47,12 +48,15 @@ result_nondominated = nondominated(algorithm.result)
 result_x = [s.objectives[0] for s in result_nondominated]
 result_y = [s.objectives[1] for s in result_nondominated]
 
-
 result_y_true = [pareto_function(x) for x in result_x]
-err = mean_squared_error(result_y_true, result_y)
+igd = get_performance_indicator('igd', pareto)
 
-print(err)
+print(
+    "MSE: \t", mean_squared_error(result_y_true, result_y), '\n' +
+    "IGD: \t", igd.calc(numpy.array(list(zip(result_x, result_y))))
+)
 
+# region plot
 ax = pyplot.figure().add_subplot()
 ax.scatter(
     result_x,
@@ -81,3 +85,4 @@ pyplot.savefig(
     dpi=200,
     bbox_inches='tight'
 )
+# endregion plot

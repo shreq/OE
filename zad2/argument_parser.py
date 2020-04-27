@@ -1,7 +1,7 @@
 import argparse
 import sys
 
-from utils import clear
+from utils import clear, stringify
 
 algorithms = {
     1: 'nsga2',
@@ -19,35 +19,29 @@ problems = {
 }
 
 
-def stringify(dict_):
-    return ''.join(['[%s] %s\n' % (key, value.upper()) for (key, value) in dict_.items()])
-
-
 class ArgumentParser:
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
     args = None
 
     def __init__(self):
         self.parser.add_argument(
             '-a',
             dest='algorithm',
-            default=1,
             type=int,
-            help='[ %s ]' % ' | '.join(algorithms.values())
+            help=stringify(algorithms)
         )
         self.parser.add_argument(
             '-p',
             dest='problem',
-            default=1,
             type=int,
-            help='[ %s ]' % ' | '.join(problems.values())
+            help=stringify(problems)
         )
         self.parser.add_argument(
             '-g',
-            default=50,
+            default=10000,
             dest='n_generations',
             type=int,
-            help='number of generations, default 50'
+            help='number of generations, default 10000'
         )
         self.parser.add_argument(
             '-o',
@@ -63,24 +57,6 @@ class ArgumentParser:
             type=float,
             help='operation probability, default 0.5'
         )
-        # self.parser.add_argument(
-        #     '-q', '--quiet',
-        #     action='store_false',
-        #     dest='quiet',
-        #     help='no output'
-        # )
-        # self.parser.add_argument(
-        #     '--plot',
-        #     action='store_true',
-        #     dest='plot',
-        #     help='show graph'
-        # )
-        # self.parser.add_argument(
-        #     '--animation',
-        #     action='store_true',
-        #     dest='animation',
-        #     help='save animation'
-        # )
         self.args = self.parser.parse_args().__dict__
 
     def get_algorithm(self):
@@ -127,11 +103,3 @@ class ArgumentParser:
 
     def get_population(self):
         return self.args['population']
-    # def get_quiet(self):
-    #     return self.args['quiet']
-    #
-    # def get_plot(self):
-    #     return self.args['plot']
-    #
-    # def get_animation(self):
-    #     return self.args['animation']

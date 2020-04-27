@@ -22,7 +22,6 @@ problem = {
     'zdt2': ZDT2(),
     'zdt3': ZDT3(),
     'zdt4': ZDT4(),
-    'zdt6': ZDT6()
 }[args.get_problem()]
 
 algorithm = {

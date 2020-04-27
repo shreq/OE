@@ -7,15 +7,12 @@ algorithms = {
     1: 'nsga2',
     2: 'ibea',
     3: 'spea2',
-    4: 'gde3'
 }
 problems = {
     1: 'zdt1',
     2: 'zdt2',
     3: 'zdt3',
     4: 'zdt4',
-    5: 'zdt5',
-    6: 'zdt6'
 }
 
 
@@ -61,7 +58,7 @@ class ArgumentParser:
 
     def get_algorithm(self):
         while self.args['algorithm'] is None or \
-                self.args['algorithm'] < 1 or 4 < self.args['algorithm']:
+                self.args['algorithm'] < 1 or 3 < self.args['algorithm']:
             clear()
             try:
                 self.args['algorithm'] = int(input(
@@ -79,7 +76,7 @@ class ArgumentParser:
 
     def get_problem(self):
         while self.args['problem'] is None or \
-                self.args['problem'] < 1 or 6 < self.args['problem']:
+                self.args['problem'] < 1 or 4 < self.args['problem']:
             clear()
             try:
                 self.args['problem'] = int(input(

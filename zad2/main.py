@@ -22,7 +22,6 @@ problem = {
     'zdt2': ZDT2(),
     'zdt3': ZDT3(),
     'zdt4': ZDT4(),
-    'zdt5': ZDT5(),
     'zdt6': ZDT6()
 }[args.get_problem()]
 
@@ -30,7 +29,6 @@ algorithm = {
     'nsga2': NSGAII(problem, population_size, variator=variator),
     'ibea': IBEA(problem, population_size, variator=variator),
     'spea2': SPEA2(problem, population_size, variator=variator),
-    'gde3': GDE3(problem, population_size, variator=variator),
 }[algorithm]
 
 algorithm.run(args.get_n_generations())

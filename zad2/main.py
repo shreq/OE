@@ -2,6 +2,7 @@ from matplotlib import pyplot
 from platypus import ZDT1, ZDT2, ZDT3, ZDT4, ZDT5, ZDT6
 from platypus.algorithms import NSGAII, IBEA, SPEA2, GDE3
 from platypus.operators import UniformMutation
+from platypus.core import nondominated
 from pymoo.factory import get_problem
 from scipy.interpolate import interp1d
 from sklearn.metrics import mean_squared_error
@@ -42,11 +43,12 @@ pareto_x = pareto[:, 0]
 pareto_y = pareto[:, 1]
 pareto_function = interp1d(pareto_x, pareto_y, kind='cubic')
 
-result_x = [s.objectives[0] for s in algorithm.result]
-result_y = [s.objectives[1] for s in algorithm.result]
+result_nondominated = nondominated(algorithm.result)
+result_x = [s.objectives[0] for s in result_nondominated]
+result_y = [s.objectives[1] for s in result_nondominated]
+
 
 result_y_true = [pareto_function(x) for x in result_x]
-
 err = mean_squared_error(result_y_true, result_y)
 
 print(err)
@@ -57,7 +59,8 @@ ax.scatter(
     result_y,
     alpha=0.6,
     marker='x',
-    label='results'
+    label='results',
+    color='red'
 )
 ax.plot(
     pareto_x,

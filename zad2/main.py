@@ -32,7 +32,13 @@ problem = {
     'zdt3': ZDT3(),
     'zdt4': ZDT4(),
 }[problem_name]
-for generation in [1000, 10000, 30000, 60000, 100000]:
+generation = 10000
+population_size = 20
+for probability in [0.2, 0.5, 1.0]:
+    variator = UniformMutation(
+        probability=probability,
+        perturbation=0.5
+    )
     algorithm = {
         'nsga2': NSGAII(problem, population_size, variator=variator),
         'ibea': IBEA(problem, population_size, variator=variator),

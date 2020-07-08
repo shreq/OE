@@ -1,15 +1,12 @@
 ﻿#include <iostream>
 #include "src/point.cpp"
-#include "src/chromosome.cpp"
+#include "src/creature.cpp"
+#include "src/clusterer.cpp"
 
 using namespace std;
 
 int main()
 {
-	Chromosome chromosome;
-	for (auto center : chromosome.getCenters())
-	{
-		cout << center->getX() << ' ' << center->getY() << '\n';
-	}
+	auto clusterer = Clusterer(3);
 	return 0;
 }

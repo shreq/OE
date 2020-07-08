@@ -1,5 +1,3 @@
-#ifndef POINT_HPP
-#define POINT_HPP
 #pragma once
 
 class Point
@@ -14,6 +12,6 @@ public:
 
     double getX();
     double getY();
-};
 
-#endif // POINT_HPP
+    void mutate();
+};

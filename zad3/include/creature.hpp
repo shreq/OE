@@ -16,9 +16,11 @@ public:
     std::vector<Point *> getCenters();
     double getFitness();
 
+    bool operator==(const Creature &creature);
+
 private:
-    inline void removeCenter();
-    inline void addCenter();
+    void removeCenter();
+    void addCenter();
 
 public:
     void updateFitness();

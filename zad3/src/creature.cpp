@@ -13,9 +13,13 @@ Creature::Creature()
     {
         centers.emplace_back(new Point());
     }
+    updateFitness();
 }
 
-Creature::Creature(vector<Point *> centers) : centers(centers) {}
+Creature::Creature(vector<Point *> centers) : centers(centers)
+{
+    updateFitness();
+}
 
 Creature::~Creature() {}
 
@@ -27,6 +31,11 @@ vector<Point *> Creature::getCenters()
 double Creature::getFitness()
 {
     return fitness;
+}
+
+bool Creature::operator==(const Creature &creature)
+{
+    return (this == &creature);
 }
 
 inline void Creature::removeCenter()

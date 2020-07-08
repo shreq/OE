@@ -10,5 +10,7 @@ int main()
 {
 	auto clusterer = Clusterer(50);
 
+	clusterer.evolve(1000);
+
 	return 0;
 }

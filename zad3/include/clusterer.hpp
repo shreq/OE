@@ -16,11 +16,13 @@ public:
     unsigned int getGeneration();
 
 private:
-    void updateFitness();
-    Creature *selection();
-    Creature *crossover(Creature *creatureA, Creature *creatureB);
-    void mutate();
+    Creature *rouletteSelection();
+    Creature *randomCrossover(std::vector<Creature *> parents);
+
+    void sortByFitness();
+    std::vector<Creature *> selection(unsigned int numberOfSelected);
+    std::vector<Creature *> generateOffspring();
 
 public:
-    void evolve();
+    void evolve(unsigned int generations);
 };

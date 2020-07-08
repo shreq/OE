@@ -13,7 +13,7 @@ Clusterer::Clusterer(unsigned int populationSize)
     {
         creatures.emplace_back(new Creature());
     }
-
+    sortByFitness();
     generation = 0;
 }
 
@@ -29,21 +29,9 @@ unsigned int Clusterer::getGeneration()
     return generation;
 }
 
-void Clusterer::updateFitness()
+Creature *Clusterer::rouletteSelection()
 {
-    for (auto creature : creatures)
-    {
-        creature->updateFitness();
-    }
-
-    sort(creatures.begin(), creatures.end(), [](Creature *a, Creature *b) {
-        return a->getFitness() < b->getFitness();
-    });
-}
-
-Creature *Clusterer::selection()
-{
-    double fitnessSum = 0;
+    double fitnessSum = 0.0;
     for (auto creature : creatures)
     {
         fitnessSum += creature->getFitness();
@@ -63,35 +51,54 @@ Creature *Clusterer::selection()
     return creatures.back();
 }
 
-Creature *Clusterer::crossover(Creature *creatureA, Creature *creatureB)
+Creature *Clusterer::randomCrossover(vector<Creature *> parents)
 {
-    unsigned int length = min(creatureA->getCenters().size(), creatureB->getCenters().size());
-    auto centers = vector<Point *>(length);
+    unsigned int length = parents[0]->getCenters().size();
+    for (unsigned int i = 1; i < parents.size(); i++)
+    {
+        if (parents[i]->getCenters().size() < length)
+        {
+            length = parents[i]->getCenters().size();
+        }
+    }
 
+    auto centers = vector<Point *>(length);
     for (unsigned int i = 0; i < length; i++)
     {
-        if (getRandomDouble() < 0.5)
-        {
-            centers[i] = creatureA->getCenters()[i];
-        }
-        else
-        {
-            centers[i] = creatureB->getCenters()[i];
-        }
+        centers[i] = parents[getRandomInt() % parents.size()]->getCenters()[i];
     }
 
     return new Creature(centers);
 }
 
-void Clusterer::mutate()
+inline void Clusterer::sortByFitness()
 {
-    for (auto creature : creatures)
-    {
-        creature->mutate();
-    }
+    sort(creatures.begin(), creatures.end(), [](Creature *a, Creature *b) {
+        return a->getFitness() < b->getFitness();
+    });
 }
 
-void Clusterer::evolve()
+vector<Creature *> Clusterer::selection(unsigned int numberOfSelected)
+{
+    if (numberOfSelected > creatures.size())
+    {
+        throw; // FIXME: throw some proper exception
+    }
+
+    auto selected = vector<Creature *>();
+    for (unsigned int i = 0; i < numberOfSelected; i++)
+    {
+        Creature *creature = rouletteSelection();
+        if (find(selected.begin(), selected.end(), creature) != selected.end())
+        {
+            selected.emplace_back(creature);
+        }
+    }
+
+    return selected;
+}
+
+vector<Creature *> Clusterer::generateOffspring()
 {
     auto creaturesNew = vector<Creature *>();
 
@@ -102,17 +109,20 @@ void Clusterer::evolve()
 
     for (unsigned int i = (elitism ? 1 : 0); i < creatures.size(); i++)
     {
-        Creature *a = selection();
-        Creature *b = selection();
-        while (a == b)
-        {
-            b = selection();
-        }
-
-        creaturesNew.emplace_back(crossover(a, b));
+        Creature *child = randomCrossover(selection(2));
+        child->mutate();
+        child->updateFitness();
+        creaturesNew.emplace_back(child);
     }
 
-    creatures = creaturesNew;
-    mutate();
-    generation++;
+    return creaturesNew;
+}
+
+void Clusterer::evolve(unsigned int generations)
+{
+    for (; generation < generations; generation++)
+    {
+        creatures = generateOffspring();
+        sortByFitness();
+    }
 }

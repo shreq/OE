@@ -1,12 +1,14 @@
-﻿#include <iostream>
-#include "src/point.cpp"
-#include "src/creature.cpp"
-#include "src/clusterer.cpp"
+﻿#include "include/point.hpp"
+#include "include/creature.hpp"
+#include "include/clusterer.hpp"
+#include "include/utils.hpp"
+#include <iostream>
 
 using namespace std;
 
 int main()
 {
-	auto clusterer = Clusterer(3);
+	auto clusterer = Clusterer(50);
+
 	return 0;
 }

@@ -1,26 +1,10 @@
 #include "../include/creature.hpp"
 #include "../include/point.hpp"
-#include "utils.cpp"
+#include "../include/utils.hpp"
 #include <iostream>
 #include <cmath>
 
 using namespace std;
-
-inline void Creature::removeCenter()
-{
-    if (centers.size() > centersCountMin && willMutate(centerRemoveMutationRate))
-    {
-        centers.erase(centers.begin() + getRandomInt() % centers.size());
-    }
-}
-
-inline void Creature::addCenter()
-{
-    if (centers.size() < centersCountMax && willMutate(centerAddMutationRate))
-    {
-        centers.insert(centers.begin() + getRandomInt() % centers.size(), new Point());
-    }
-}
 
 Creature::Creature()
 {
@@ -43,6 +27,22 @@ vector<Point *> Creature::getCenters()
 double Creature::getFitness()
 {
     return fitness;
+}
+
+inline void Creature::removeCenter()
+{
+    if (centers.size() > centersCountMin && willMutate(centerRemoveMutationRate))
+    {
+        centers.erase(centers.begin() + getRandomInt() % centers.size());
+    }
+}
+
+inline void Creature::addCenter()
+{
+    if (centers.size() < centersCountMax && willMutate(centerAddMutationRate))
+    {
+        centers.insert(centers.begin() + getRandomInt() % centers.size(), new Point());
+    }
 }
 
 void Creature::updateFitness()

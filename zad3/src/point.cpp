@@ -1,5 +1,5 @@
 #include "../include/point.hpp"
-#include "utils.cpp"
+#include "../include/utils.hpp"
 
 using namespace std;
 

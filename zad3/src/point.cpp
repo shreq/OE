@@ -3,11 +3,7 @@
 
 using namespace std;
 
-Point::Point()
-{
-    x = getRandomGaussian();
-    y = getRandomGaussian();
-}
+Point::Point() : x(getRandomGaussian()), y(getRandomGaussian()) {}
 
 Point::Point(double x, double y) : x(x), y(y) {}
 

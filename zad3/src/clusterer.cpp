@@ -7,15 +7,13 @@
 
 using namespace std;
 
-Clusterer::Clusterer(unsigned int populationSize)
+Clusterer::Clusterer(unsigned int populationSize) : creatures(vector<Creature *>()), generation(0)
 {
-    creatures = vector<Creature *>();
     for (unsigned int i = 0; i < populationSize; i++)
     {
         creatures.emplace_back(new Creature());
     }
     creatures = sortByFitness(creatures);
-    generation = 0;
 }
 
 Clusterer::~Clusterer() {}

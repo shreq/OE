@@ -6,9 +6,8 @@
 
 using namespace std;
 
-Creature::Creature()
+Creature::Creature() : centers(vector<Point *>())
 {
-    centers = vector<Point *>();
     for (unsigned int i = 0; i < max(centersCountMin, getRandomInt() % (centersCountMax + 1)); i++)
     {
         centers.emplace_back(new Point());

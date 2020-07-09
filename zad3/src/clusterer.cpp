@@ -3,6 +3,7 @@
 #include "../include/utils.hpp"
 #include <cmath>
 #include <algorithm>
+#include <exception>
 
 using namespace std;
 
@@ -13,7 +14,7 @@ Clusterer::Clusterer(unsigned int populationSize)
     {
         creatures.emplace_back(new Creature());
     }
-    sortByFitness();
+    creatures = sortByFitness(creatures);
     generation = 0;
 }
 
@@ -71,27 +72,29 @@ Creature *Clusterer::randomCrossover(vector<Creature *> parents)
     return new Creature(centers);
 }
 
-inline void Clusterer::sortByFitness()
+vector<Creature *> Clusterer::sortByFitness(vector<Creature *> creatures)
 {
     sort(creatures.begin(), creatures.end(), [](Creature *a, Creature *b) {
         return a->getFitness() < b->getFitness();
     });
+    return creatures;
 }
 
 vector<Creature *> Clusterer::selection(unsigned int numberOfSelected)
 {
     if (numberOfSelected > creatures.size())
     {
-        throw; // FIXME: throw some proper exception
+        throw runtime_error("Number of creatures to select bigger than population");
     }
 
     auto selected = vector<Creature *>();
-    for (unsigned int i = 0; i < numberOfSelected; i++)
+    for (unsigned int i = 0; i < numberOfSelected;)
     {
         Creature *creature = rouletteSelection();
-        if (find(selected.begin(), selected.end(), creature) != selected.end())
+        if (find(selected.begin(), selected.end(), creature) == selected.end())
         {
             selected.emplace_back(creature);
+            i++;
         }
     }
 
@@ -109,13 +112,12 @@ vector<Creature *> Clusterer::generateOffspring()
 
     for (unsigned int i = (elitism ? 1 : 0); i < creatures.size(); i++)
     {
-        Creature *child = randomCrossover(selection(2));
+        auto *child = randomCrossover(selection(2));
         child->mutate();
-        child->updateFitness();
         creaturesNew.emplace_back(child);
     }
 
-    return creaturesNew;
+    return sortByFitness(creaturesNew);
 }
 
 void Clusterer::evolve(unsigned int generations)
@@ -123,6 +125,5 @@ void Clusterer::evolve(unsigned int generations)
     for (; generation < generations; generation++)
     {
         creatures = generateOffspring();
-        sortByFitness();
     }
 }

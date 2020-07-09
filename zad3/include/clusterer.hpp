@@ -19,7 +19,7 @@ private:
     Creature *rouletteSelection();
     Creature *randomCrossover(std::vector<Creature *> parents);
 
-    void sortByFitness();
+    std::vector<Creature *> sortByFitness(std::vector<Creature *> creatures);
     std::vector<Creature *> selection(unsigned int numberOfSelected);
     std::vector<Creature *> generateOffspring();
 

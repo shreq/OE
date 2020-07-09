@@ -12,8 +12,8 @@ unsigned int centersCountMin = 2;
 unsigned int centersCountMax = 10;
 
 double centerMoveMutationRate = 0.3;
-double centerRemoveMutationRate = 0.1;
-double centerAddMutationRate = 0.1;
+double centerRemoveMutationRate = 0.15;
+double centerAddMutationRate = 0.15;
 /* #endregion settings */
 
 unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();

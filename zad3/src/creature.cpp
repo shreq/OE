@@ -38,7 +38,7 @@ bool Creature::operator==(const Creature &creature)
     return (this == &creature);
 }
 
-inline void Creature::removeCenter()
+void Creature::removeCenter()
 {
     if (centers.size() > centersCountMin && willMutate(centerRemoveMutationRate))
     {
@@ -46,7 +46,7 @@ inline void Creature::removeCenter()
     }
 }
 
-inline void Creature::addCenter()
+void Creature::addCenter()
 {
     if (centers.size() < centersCountMax && willMutate(centerAddMutationRate))
     {
@@ -68,4 +68,6 @@ void Creature::mutate()
     {
         center->mutate();
     }
+
+    updateFitness();
 }

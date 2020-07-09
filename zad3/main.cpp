@@ -8,9 +8,9 @@ using namespace std;
 
 int main()
 {
-	auto clusterer = Clusterer(50);
+	auto clusterer = Clusterer(10);
 
-	clusterer.evolve(1000);
+	clusterer.evolve(10);
 
 	return 0;
 }

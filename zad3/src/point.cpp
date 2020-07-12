@@ -20,9 +20,14 @@ double Point::getY()
     return y;
 }
 
-string Point::to_string(string separator = ", ")
+string Point::toString()
 {
-    return std::to_string(x) + separator + std::to_string(y);
+    return to_string(x) + ", " + to_string(y);
+}
+
+string Point::toString(string separator)
+{
+    return to_string(x) + separator + to_string(y);
 }
 
 void Point::mutate()

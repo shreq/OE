@@ -13,7 +13,8 @@ public:
 
     double getX();
     double getY();
-    std::string to_string(std::string separator);
+    std::string toString();
+    std::string toString(std::string separator);
 
     void mutate();
     double euclideanDistance(Point *point);

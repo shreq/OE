@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 class Point
 {
@@ -12,6 +13,8 @@ public:
 
     double getX();
     double getY();
+    std::string to_string(std::string separator);
 
     void mutate();
+    double euclideanDistance(Point *point);
 };

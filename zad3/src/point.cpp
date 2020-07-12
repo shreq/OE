@@ -1,5 +1,6 @@
 #include "../include/point.hpp"
 #include "../include/utils.hpp"
+#include <cmath>
 
 using namespace std;
 
@@ -19,6 +20,11 @@ double Point::getY()
     return y;
 }
 
+string Point::to_string(string separator = ", ")
+{
+    return std::to_string(x) + separator + std::to_string(y);
+}
+
 void Point::mutate()
 {
     if (willMutate(centerMoveMutationRate))
@@ -26,4 +32,11 @@ void Point::mutate()
         x += getRandomGaussian();
         y += getRandomGaussian();
     }
+}
+
+double Point::euclideanDistance(Point *point)
+{
+    double x_diff = x - point->getX();
+    double y_diff = y - point->getY();
+    return sqrt(x_diff * x_diff + y_diff * y_diff);
 }

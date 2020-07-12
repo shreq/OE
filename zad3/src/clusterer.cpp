@@ -1,4 +1,5 @@
 #include "../include/clusterer.hpp"
+#include "../include/point.hpp"
 #include "../include/creature.hpp"
 #include "../include/utils.hpp"
 #include <cmath>
@@ -7,7 +8,7 @@
 
 using namespace std;
 
-Clusterer::Clusterer(unsigned int populationSize) : creatures(vector<Creature *>()), generation(0)
+Clusterer::Clusterer(vector<Point *> data, unsigned int populationSize) : data(data), creatures(vector<Creature *>()), generation(0)
 {
     for (unsigned int i = 0; i < populationSize; i++)
     {
@@ -73,7 +74,7 @@ Creature *Clusterer::randomCrossover(vector<Creature *> parents)
 vector<Creature *> Clusterer::sortByFitness(vector<Creature *> creatures)
 {
     sort(creatures.begin(), creatures.end(), [](Creature *a, Creature *b) {
-        return a->getFitness() < b->getFitness();
+        return a->getFitness() > b->getFitness();
     });
     return creatures;
 }
@@ -124,4 +125,35 @@ void Clusterer::evolve(unsigned int generations)
     {
         creatures = generateOffspring();
     }
+}
+
+map<Point *, vector<Point *>> Clusterer::cluster()
+{
+    auto centers = creatures.at(0)->getCenters();
+
+    auto result = map<Point *, vector<Point *>>();
+    for (auto center : centers)
+    {
+        result[center] = vector<Point *>();
+    }
+
+    for (auto point : data)
+    {
+        Point *closestCenter = centers.at(0);
+        double lowestDistance = point->euclideanDistance(centers.at(0));
+
+        for (unsigned int i = 1; i < centers.size(); i++)
+        {
+            double distance = point->euclideanDistance(centers[i]);
+            if (distance < lowestDistance)
+            {
+                lowestDistance = distance;
+                closestCenter = centers[i];
+            }
+        }
+
+        result[closestCenter].emplace_back(point);
+    }
+
+    return result;
 }

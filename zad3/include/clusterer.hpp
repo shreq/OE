@@ -1,15 +1,18 @@
 #pragma once
 #include <vector>
+#include <map>
 
+class Point;
 class Creature;
 
 class Clusterer
 {
+    std::vector<Point *> data;
     std::vector<Creature *> creatures;
     unsigned int generation;
 
 public:
-    Clusterer(unsigned int populationSize);
+    Clusterer(std::vector<Point *> data, unsigned int populationSize);
     virtual ~Clusterer();
 
     std::vector<Creature *> getCreatures();
@@ -25,4 +28,5 @@ private:
 
 public:
     void evolve(unsigned int generations);
+    std::map<Point *, std::vector<Point *>> cluster();
 };

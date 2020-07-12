@@ -1,4 +1,8 @@
 #pragma once
+#include <string>
+#include <vector>
+
+class Point;
 
 /* #region settings */
 extern bool elitism;
@@ -18,3 +22,5 @@ int getRandomInt();
 double getRandomDouble();
 double getRandomGaussian();
 bool willMutate(double mutationRate);
+
+std::vector<Point *> readCsv(std::string filepath);

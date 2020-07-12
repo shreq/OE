@@ -1,6 +1,12 @@
 #include "../include/utils.hpp"
+#include "../include/point.hpp"
 #include <chrono>
 #include <random>
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <exception>
+#include <iostream>
 
 /* #region settings */
 bool elitism = true;
@@ -39,4 +45,35 @@ double getRandomGaussian()
 bool willMutate(double mutationRate)
 {
     return (getRandomDouble() < mutationRate);
+}
+
+std::vector<Point *> readCsv(std::string filepath)
+{
+    auto result = std::vector<Point *>();
+    std::ifstream file(filepath);
+
+    if (!file.is_open())
+    {
+        throw std::runtime_error("Could not open file");
+    }
+    else if (!file.good())
+    {
+        throw std::runtime_error("Error reading file");
+    }
+
+    std::string row, cell;
+    while (std::getline(file, row))
+    {
+        std::stringstream ss(row);
+        auto values = std::vector<double>();
+
+        while (std::getline(ss, cell, ','))
+        {
+            values.emplace_back(std::stod(cell));
+        }
+
+        result.emplace_back(new Point(values.at(0), values.at(1)));
+    }
+
+    return result;
 }

@@ -8,9 +8,7 @@ using namespace std;
 
 int main()
 {
-	auto clusterer = Clusterer(10);
-
-	clusterer.evolve(10);
+	auto clusterer = Clusterer(readCsv("resources/credit_card_pca.csv"), 10);
 
 	return 0;
 }

@@ -51,7 +51,7 @@ dataset = pandas.read_csv("resources/credit_card.csv").dropna().apply(factorize)
 dataset_pca = pca(normalize(dataset))
 print(dataset_pca)
 
-dataset_pca.to_csv("resources/credit_card_pca.csv", index=False)
+dataset_pca.to_csv("resources/credit_card_pca.csv", index=False, header=False)
 
 # pyplot.scatter(
 #     x=dataset_pca.iloc[:, 0],

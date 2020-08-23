@@ -1,5 +1,6 @@
 #include "../include/utils.hpp"
 #include "../include/point.hpp"
+#include "../include/cluster.hpp"
 #include <chrono>
 #include <random>
 #include <fstream>
@@ -76,4 +77,28 @@ std::vector<Point *> readCsv(std::string filepath)
     }
 
     return result;
+}
+
+long averageDistance(Point * point, std::vector<Point *> otherPoints)
+{
+    long distSum = 0.0;
+    for (auto i : otherPoints)
+    {
+        if (point != i)
+        {
+            long dist = point->euclideanDistance(i);
+            distSum += dist;
+        }
+    }
+    return distSum / otherPoints.size();
+}
+
+long averageDistance(Cluster * cluster)
+{
+    return averageDistance(cluster->getCenter(), cluster->getPoints());
+}
+
+long distanceOfCenters(Cluster * first, Cluster * second)
+{
+    return first->getCenter()->euclideanDistance(second->getCenter());
 }

@@ -1,12 +1,15 @@
 #include "../include/creature.hpp"
 #include "../include/point.hpp"
 #include "../include/utils.hpp"
+#include "../include/cluster.hpp"
+#include "../include/fitness/fitness.hpp"
 #include <iostream>
 #include <cmath>
+#include <algorithm>
 
 using namespace std;
 
-Creature::Creature() : centers(vector<Point *>())
+Creature::Creature(vector<Point *> data, Fitness * fitness) : centers(vector<Point *>()), data(data), fitness(fitness)
 {
     for (unsigned int i = 0; i < max(centersCountMin, getRandomInt() % (centersCountMax + 1)); i++)
     {
@@ -15,7 +18,7 @@ Creature::Creature() : centers(vector<Point *>())
     updateFitness();
 }
 
-Creature::Creature(vector<Point *> centers) : centers(centers)
+Creature::Creature(vector<Point *> centers, vector<Point *> data, Fitness * fitness) : centers(centers), data(data), fitness(fitness)
 {
     updateFitness();
 }
@@ -27,7 +30,12 @@ vector<Point *> Creature::getCenters()
     return centers;
 }
 
-double Creature::getFitness()
+double Creature::getFitnessValue()
+{
+    return fitness->getValue();
+}
+
+Fitness * Creature::getFitness()
 {
     return fitness;
 }
@@ -55,7 +63,8 @@ void Creature::addCenter()
 
 void Creature::updateFitness()
 {
-    /// TODO: implement
+    auto clusters = calculateClusters();
+    fitness->updateValue(clusters);
 }
 
 void Creature::mutate()
@@ -69,4 +78,40 @@ void Creature::mutate()
     }
 
     updateFitness();
+}
+
+vector<Cluster *> Creature::calculateClusters()
+{
+    auto clusters = map<Point *, vector<Point *>>();
+    for (auto center : centers)
+    {
+        clusters[center] = vector<Point *>();
+    }
+
+    for (auto point : data)
+    {
+        Point *closestCenter = centers.at(0);
+        double lowestDistance = point->euclideanDistance(centers.at(0));
+
+        for (unsigned int i = 1; i < centers.size(); i++)
+        {
+            double distance = point->euclideanDistance(centers[i]);
+            if (distance < lowestDistance)
+            {
+                lowestDistance = distance;
+                closestCenter = centers[i];
+            }
+        }
+
+        clusters[closestCenter].emplace_back(point);
+    }
+
+    auto result = vector<Cluster *>();
+    for (auto &cluster : clusters) 
+    {
+        auto center = cluster.first;
+        auto points = cluster.second;
+        result.emplace_back(new Cluster(center, points));
+    }
+    return result;
 }

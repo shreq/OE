@@ -8,11 +8,11 @@
 
 using namespace std;
 
-Clusterer::Clusterer(vector<Point *> data, unsigned int populationSize) : data(data), creatures(vector<Creature *>()), generation(0)
+Clusterer::Clusterer(vector<Point *> data, unsigned int populationSize, Fitness * fitnessStrategy) : data(data), creatures(vector<Creature *>()), generation(0), fitnessStrategy(fitnessStrategy)
 {
     for (unsigned int i = 0; i < populationSize; i++)
     {
-        creatures.emplace_back(new Creature());
+        creatures.emplace_back(new Creature(data, fitnessStrategy));
     }
     creatures = sortByFitness(creatures);
 }
@@ -34,14 +34,14 @@ Creature *Clusterer::rouletteSelection()
     double fitnessSum = 0.0;
     for (auto creature : creatures)
     {
-        fitnessSum += creature->getFitness();
+        fitnessSum += creature->getFitnessValue();
     }
 
     double random = getRandomDouble() * fitnessSum;
 
     for (auto creature : creatures)
     {
-        random -= creature->getFitness();
+        random -= creature->getFitnessValue();
         if (random < 0)
         {
             return creature;
@@ -68,7 +68,7 @@ Creature *Clusterer::randomCrossover(vector<Creature *> parents)
         centers[i] = parents[getRandomInt() % parents.size()]->getCenters()[i];
     }
 
-    return new Creature(centers);
+    return new Creature(centers, fitnessStrategy);
 }
 
 vector<Creature *> Clusterer::sortByFitness(vector<Creature *> creatures)
@@ -125,35 +125,4 @@ void Clusterer::evolve(unsigned int generations)
     {
         creatures = generateOffspring();
     }
-}
-
-map<Point *, vector<Point *>> Clusterer::cluster()
-{
-    auto centers = creatures.at(0)->getCenters();
-
-    auto result = map<Point *, vector<Point *>>();
-    for (auto center : centers)
-    {
-        result[center] = vector<Point *>();
-    }
-
-    for (auto point : data)
-    {
-        Point *closestCenter = centers.at(0);
-        double lowestDistance = point->euclideanDistance(centers.at(0));
-
-        for (unsigned int i = 1; i < centers.size(); i++)
-        {
-            double distance = point->euclideanDistance(centers[i]);
-            if (distance < lowestDistance)
-            {
-                lowestDistance = distance;
-                closestCenter = centers[i];
-            }
-        }
-
-        result[closestCenter].emplace_back(point);
-    }
-
-    return result;
 }

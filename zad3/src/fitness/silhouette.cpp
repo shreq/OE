@@ -7,8 +7,9 @@
 #include <cmath>
 #include <algorithm>
 
-
 using namespace std;
+
+Silhouette::~Silhouette() {}
 
 void Silhouette::updateValue(vector<Cluster *> clusters)
 {
@@ -16,13 +17,13 @@ void Silhouette::updateValue(vector<Cluster *> clusters)
     long nOfPoints = 0.0;
     for (auto cluster : clusters)
     {
-        for(auto i : cluster->getPoints())
+        for (auto i : cluster->getPoints())
         {
             long avgDistInCluster = averageDistance(i, cluster->getPoints());
             long minAvgDistToOtherClusters = minimalAverageDistanceToOtherClusters(i, cluster, clusters);
 
             long pointValue = (minAvgDistToOtherClusters - avgDistInCluster) / max(minAvgDistToOtherClusters, avgDistInCluster);
-            
+
             pointValueSum += pointValue;
             nOfPoints++;
         }
@@ -35,7 +36,7 @@ bool Silhouette::operator>(const Fitness &other)
     return value > other.getValue();
 }
 
-long Silhouette::minimalAverageDistanceToOtherClusters(Point * point, Cluster * pointCluster, std::vector<Cluster *> clusters)
+long Silhouette::minimalAverageDistanceToOtherClusters(Point *point, Cluster *pointCluster, std::vector<Cluster *> clusters)
 {
     long minValue = LONG_MAX;
     for (auto i : clusters)

@@ -7,16 +7,18 @@
 
 using namespace std;
 
+DavesBouldin::~DavesBouldin() {}
+
 void DavesBouldin::updateValue(vector<Cluster *> clusters)
 {
     long sum = 0;
 
-    for (auto i : clusters) 
+    for (auto i : clusters)
     {
         sum += maxDistance(i, clusters);
     }
 
-    value =  1 / clusters.size() * sum;
+    value = 1 / clusters.size() * sum;
 }
 
 bool DavesBouldin::operator>(const Fitness &other)
@@ -24,7 +26,7 @@ bool DavesBouldin::operator>(const Fitness &other)
     return value < other.getValue();
 }
 
-long DavesBouldin::maxDistance(Cluster * i, vector<Cluster *> clusters)
+long DavesBouldin::maxDistance(Cluster *i, vector<Cluster *> clusters)
 {
     long maxValue = LONG_MIN;
     for (auto j : clusters)
@@ -39,7 +41,7 @@ long DavesBouldin::maxDistance(Cluster * i, vector<Cluster *> clusters)
     return maxValue;
 }
 
-long DavesBouldin::distance(Cluster * i, Cluster * j)
+long DavesBouldin::distance(Cluster *i, Cluster *j)
 {
     long sumOfAvgDistances = averageDistance(i) + averageDistance(j);
     long centerDistance = distanceOfCenters(i, j);

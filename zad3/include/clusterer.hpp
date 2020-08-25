@@ -11,10 +11,10 @@ class Clusterer
     std::vector<Point *> data;
     std::vector<Creature *> creatures;
     unsigned int generation;
-    Fitness * fitnessStrategy;
+    Fitness *fitnessStrategy;
 
 public:
-    Clusterer(std::vector<Point *> data, unsigned int populationSize, Fitness * fitnessStrategy);
+    Clusterer(std::vector<Point *> data, unsigned int populationSize, Fitness *fitnessStrategy);
     virtual ~Clusterer();
 
     std::vector<Creature *> getCreatures();

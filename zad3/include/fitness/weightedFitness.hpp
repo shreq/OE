@@ -2,20 +2,20 @@
 #include <vector>
 #include "./fitness.hpp"
 
-
 class Cluster;
 
-class WeightedFitness : Fitness
+class WeightedFitness : public Fitness
 {
+    Fitness *fitness;
     long weight;
-    Fitness * fitness;
 
 public:
-    WeightedFitness(Fitness * fitness, long weight);
+    WeightedFitness(Fitness *fitness, long weight);
     virtual ~WeightedFitness();
+
     long getWeight();
 
     bool operator>(const Fitness &other);
-    bool operator>(WeightedFitness * other);
+    bool operator>(WeightedFitness *other);
     void updateValue(std::vector<Cluster *> clusters);
 };

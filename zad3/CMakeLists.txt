@@ -1,4 +1,4 @@
-﻿cmake_minimum_required (VERSION 3.8)
+﻿cmake_minimum_required (VERSION 3.18)
 
 set (CMAKE_C_COMPILER gcc)
 set (CMAKE_CXX_COMPILER g++)
@@ -13,15 +13,22 @@ project(evo3)
 enable_language(CXX)
 
 set (SOURCE_FILES
-    src/point.cpp
-    src/creature.cpp
+    src/fitness/complexFitness.cpp
+    src/fitness/davesBouldin.cpp
+    src/fitness/dunnIndex.cpp
+    src/fitness/fitness.cpp
+    src/fitness/silhouette.cpp
+    src/fitness/weightedFitness.cpp
+    src/cluster.cpp
     src/clusterer.cpp
+    src/creature.cpp
+    src/point.cpp
     src/utils.cpp
     main.cpp
 )
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
+# include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+# conan_basic_setup()
 
 add_executable (evo3 ${SOURCE_FILES})
-target_link_libraries(evo3 ${CONAN_LIBS})
+# target_link_libraries(evo3 ${CONAN_LIBS})

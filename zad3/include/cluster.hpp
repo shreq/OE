@@ -1,18 +1,17 @@
 #pragma once
 #include <vector>
 
-
 class Point;
 
 class Cluster
 {
-    Point * center;
+    Point *center;
     std::vector<Point *> points;
-    
+
 public:
-    Cluster(Point * center, std::vector<Point *> points);
+    Cluster(Point *center, std::vector<Point *> points);
     virtual ~Cluster();
 
-    Point * getCenter();
+    Point *getCenter();
     std::vector<Point *> getPoints();
 };

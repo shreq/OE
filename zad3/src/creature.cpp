@@ -3,13 +3,12 @@
 #include "../include/utils.hpp"
 #include "../include/cluster.hpp"
 #include "../include/fitness/fitness.hpp"
-#include <iostream>
 #include <cmath>
 #include <algorithm>
 
 using namespace std;
 
-Creature::Creature(vector<Point *> data, Fitness * fitness) : centers(vector<Point *>()), data(data), fitness(fitness)
+Creature::Creature(vector<Point *> data, Fitness *fitness) : centers(vector<Point *>()), data(data), fitness(fitness)
 {
     for (unsigned int i = 0; i < max(centersCountMin, getRandomInt() % (centersCountMax + 1)); i++)
     {
@@ -18,7 +17,7 @@ Creature::Creature(vector<Point *> data, Fitness * fitness) : centers(vector<Poi
     updateFitness();
 }
 
-Creature::Creature(vector<Point *> centers, vector<Point *> data, Fitness * fitness) : centers(centers), data(data), fitness(fitness)
+Creature::Creature(vector<Point *> centers, vector<Point *> data, Fitness *fitness) : centers(centers), data(data), fitness(fitness)
 {
     updateFitness();
 }
@@ -35,7 +34,7 @@ double Creature::getFitnessValue()
     return fitness->getValue();
 }
 
-Fitness * Creature::getFitness()
+Fitness *Creature::getFitness()
 {
     return fitness;
 }
@@ -107,7 +106,7 @@ vector<Cluster *> Creature::calculateClusters()
     }
 
     auto result = vector<Cluster *>();
-    for (auto &cluster : clusters) 
+    for (auto &cluster : clusters)
     {
         auto center = cluster.first;
         auto points = cluster.second;

@@ -6,8 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-#include <exception>
-#include <iostream>
+#include <stdexcept>
 
 /* #region settings */
 bool elitism = true;
@@ -79,7 +78,7 @@ std::vector<Point *> readCsv(std::string filepath)
     return result;
 }
 
-long averageDistance(Point * point, std::vector<Point *> otherPoints)
+long averageDistance(Point *point, std::vector<Point *> otherPoints)
 {
     long distSum = 0.0;
     for (auto i : otherPoints)
@@ -93,12 +92,12 @@ long averageDistance(Point * point, std::vector<Point *> otherPoints)
     return distSum / otherPoints.size();
 }
 
-long averageDistance(Cluster * cluster)
+long averageDistance(Cluster *cluster)
 {
     return averageDistance(cluster->getCenter(), cluster->getPoints());
 }
 
-long distanceOfCenters(Cluster * first, Cluster * second)
+long distanceOfCenters(Cluster *first, Cluster *second)
 {
     return first->getCenter()->euclideanDistance(second->getCenter());
 }

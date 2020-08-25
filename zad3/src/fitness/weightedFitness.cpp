@@ -4,14 +4,16 @@
 
 using namespace std;
 
-WeightedFitness::WeightedFitness(Fitness * fitness, long weight) : fitness(fitness), weight(weight){};
+WeightedFitness::WeightedFitness(Fitness *fitness, long weight) : fitness(fitness), weight(weight) {}
+
+WeightedFitness::~WeightedFitness() {}
 
 bool WeightedFitness::operator>(const Fitness &other)
 {
     return fitness->operator>(other);
 }
 
-bool WeightedFitness::operator>(WeightedFitness * other)
+bool WeightedFitness::operator>(WeightedFitness *other)
 {
     return fitness->operator>(*other);
 }

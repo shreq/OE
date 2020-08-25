@@ -5,8 +5,9 @@
 #include "../../include/utils.hpp"
 #include <vector>
 
-
 using namespace std;
+
+DunnIndex::~DunnIndex() {}
 
 void DunnIndex::updateValue(vector<Cluster *> clusters)
 {
@@ -24,9 +25,9 @@ bool DunnIndex::operator>(const Fitness &other)
 long DunnIndex::minimalCenterDistance(std::vector<Cluster *> clusters)
 {
     long minValue = LONG_MAX;
-    for (auto i : clusters) 
+    for (auto i : clusters)
     {
-        for (auto j : clusters) 
+        for (auto j : clusters)
         {
             if (i != j)
             {
@@ -40,10 +41,10 @@ long DunnIndex::minimalCenterDistance(std::vector<Cluster *> clusters)
     }
 }
 
-long maximalClusterDistance(std::vector<Cluster *> clusters)
+long DunnIndex::maximalClusterDistance(std::vector<Cluster *> clusters)
 {
     long maxValue = LONG_MIN;
-    for (auto i : clusters) 
+    for (auto i : clusters)
     {
         long avgDist = averageDistance(i);
         if (avgDist > maxValue)

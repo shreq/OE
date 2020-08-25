@@ -2,7 +2,6 @@
 #include <vector>
 #include <map>
 
-
 class Point;
 class Cluster;
 class Fitness;
@@ -11,15 +10,15 @@ class Creature
 {
     std::vector<Point *> centers;
     std::vector<Point *> data;
-    Fitness * fitness;
+    Fitness *fitness;
 
 public:
-    Creature(std::vector<Point*> data, Fitness * fitnessStrategy);
-    Creature(std::vector<Point *> centers, std::vector<Point*> data, Fitness * fitnessStrategy);
+    Creature(std::vector<Point *> data, Fitness *fitnessStrategy);
+    Creature(std::vector<Point *> centers, std::vector<Point *> data, Fitness *fitnessStrategy);
     virtual ~Creature();
 
     std::vector<Point *> getCenters();
-    Fitness * getFitness();
+    Fitness *getFitness();
     double getFitnessValue();
 
     bool operator==(const Creature &creature);
@@ -27,7 +26,7 @@ public:
 private:
     void removeCenter();
     void addCenter();
-    vector<Cluster *> Creature::calculateClusters();
+    std::vector<Cluster *> calculateClusters();
 
 public:
     void updateFitness();

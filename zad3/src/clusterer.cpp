@@ -4,11 +4,11 @@
 #include "../include/utils.hpp"
 #include <cmath>
 #include <algorithm>
-#include <exception>
+#include <stdexcept>
 
 using namespace std;
 
-Clusterer::Clusterer(vector<Point *> data, unsigned int populationSize, Fitness * fitnessStrategy) : data(data), creatures(vector<Creature *>()), generation(0), fitnessStrategy(fitnessStrategy)
+Clusterer::Clusterer(vector<Point *> data, unsigned int populationSize, Fitness *fitnessStrategy) : data(data), creatures(vector<Creature *>()), generation(0), fitnessStrategy(fitnessStrategy)
 {
     for (unsigned int i = 0; i < populationSize; i++)
     {

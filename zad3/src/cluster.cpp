@@ -3,14 +3,16 @@
 
 using namespace std;
 
-Cluster::Cluster(Point * center, vector<Point *> points) : center(center), points(points){}
+Cluster::Cluster(Point *center, vector<Point *> points) : center(center), points(points) {}
 
-Point * Cluster::getCenter() 
+Cluster::~Cluster() {}
+
+Point *Cluster::getCenter()
 {
     return center;
 }
 
-vector<Point *> Cluster::getPoints() 
+vector<Point *> Cluster::getPoints()
 {
     return points;
 }

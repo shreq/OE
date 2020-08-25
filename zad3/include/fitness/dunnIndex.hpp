@@ -2,10 +2,9 @@
 #include <vector>
 #include "./fitness.hpp"
 
-
 class Cluster;
 
-class DunnIndex : public Fitness 
+class DunnIndex : public Fitness
 {
 public:
     virtual ~DunnIndex();

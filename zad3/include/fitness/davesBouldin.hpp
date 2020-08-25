@@ -10,10 +10,11 @@ public:
     virtual ~DavesBouldin();
 
 private:
-    long maxDistance(Cluster *i, std::vector<Cluster *> clusters);
-    long distance(Cluster *i, Cluster *j);
+    double maxDistance(Cluster *i, std::vector<Cluster *> clusters);
+    double distance(Cluster *i, Cluster *j);
 
 public:
-    bool operator>(const Fitness &other);
-    void updateValue(std::vector<Cluster *> clusters);
+    virtual DavesBouldin *clone() const;
+    virtual bool operator>(const Fitness &other);
+    virtual void updateValue(std::vector<Cluster *> clusters);
 };

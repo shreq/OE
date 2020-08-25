@@ -16,3 +16,8 @@ vector<Point *> Cluster::getPoints()
 {
     return points;
 }
+
+bool Cluster::isEmpty()
+{
+    return points.size() == 0;
+}

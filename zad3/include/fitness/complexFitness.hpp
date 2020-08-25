@@ -14,9 +14,11 @@ public:
     virtual ~ComplexFitness();
 
 private:
-    void add(Fitness *fitness, long weight);
+    void add(Fitness *fitness, double weight);
 
 public:
+    virtual ComplexFitness *clone() const;
+    virtual bool operator>(const Fitness &other);
     bool operator>(const ComplexFitness &other);
-    void updateValue(std::vector<Cluster *> clusters);
+    virtual void updateValue(std::vector<Cluster *> clusters);
 };

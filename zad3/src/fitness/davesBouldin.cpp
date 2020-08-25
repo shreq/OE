@@ -11,14 +11,19 @@ DavesBouldin::~DavesBouldin() {}
 
 void DavesBouldin::updateValue(vector<Cluster *> clusters)
 {
-    long sum = 0;
+    double sum = 0;
 
     for (auto i : clusters)
     {
         sum += maxDistance(i, clusters);
     }
 
-    value = 1 / clusters.size() * sum;
+    value = 1.0 / clusters.size() * sum;
+}
+
+DavesBouldin * DavesBouldin::clone() const
+{
+    return new DavesBouldin(*this);
 }
 
 bool DavesBouldin::operator>(const Fitness &other)
@@ -26,14 +31,14 @@ bool DavesBouldin::operator>(const Fitness &other)
     return value < other.getValue();
 }
 
-long DavesBouldin::maxDistance(Cluster *i, vector<Cluster *> clusters)
+double DavesBouldin::maxDistance(Cluster *i, vector<Cluster *> clusters)
 {
-    long maxValue = LONG_MIN;
+    double maxValue = LONG_MIN;
     for (auto j : clusters)
     {
-        if (i != j)
+        if (i != j && !j->isEmpty())
         {
-            long dist = distance(i, j);
+            double dist = distance(i, j);
             if (dist > maxValue)
                 maxValue = dist;
         }
@@ -41,10 +46,10 @@ long DavesBouldin::maxDistance(Cluster *i, vector<Cluster *> clusters)
     return maxValue;
 }
 
-long DavesBouldin::distance(Cluster *i, Cluster *j)
+double DavesBouldin::distance(Cluster *i, Cluster *j)
 {
-    long sumOfAvgDistances = averageDistance(i) + averageDistance(j);
-    long centerDistance = distanceOfCenters(i, j);
+    double sumOfAvgDistances = averageDistance(i) + averageDistance(j);
+    double centerDistance = distanceOfCenters(i, j);
 
     return sumOfAvgDistances / centerDistance;
 }

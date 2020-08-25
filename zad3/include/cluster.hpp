@@ -14,4 +14,5 @@ public:
 
     Point *getCenter();
     std::vector<Point *> getPoints();
+    bool isEmpty();
 };

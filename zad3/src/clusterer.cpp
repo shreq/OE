@@ -2,6 +2,7 @@
 #include "../include/point.hpp"
 #include "../include/creature.hpp"
 #include "../include/utils.hpp"
+#include "../include/fitness/fitness.hpp"
 #include <cmath>
 #include <algorithm>
 #include <stdexcept>
@@ -74,7 +75,7 @@ Creature *Clusterer::randomCrossover(vector<Creature *> parents)
 vector<Creature *> Clusterer::sortByFitness(vector<Creature *> creatures)
 {
     sort(creatures.begin(), creatures.end(), [](Creature *a, Creature *b) {
-        return a->getFitness() > b->getFitness();
+        return a->getFitness()->operator>(*(b->getFitness()));
     });
     return creatures;
 }

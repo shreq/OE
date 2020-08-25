@@ -4,9 +4,14 @@
 
 using namespace std;
 
-WeightedFitness::WeightedFitness(Fitness *fitness, long weight) : fitness(fitness), weight(weight) {}
+WeightedFitness::WeightedFitness(Fitness *fitness, double weight) : fitness(fitness), weight(weight) {}
 
 WeightedFitness::~WeightedFitness() {}
+
+WeightedFitness * WeightedFitness::clone() const
+{
+    return new WeightedFitness(*this);
+}
 
 bool WeightedFitness::operator>(const Fitness &other)
 {
@@ -24,7 +29,7 @@ void WeightedFitness::updateValue(std::vector<Cluster *> clusters)
     value = weight * fitness->getValue();
 }
 
-long WeightedFitness::getWeight()
+double WeightedFitness::getWeight()
 {
     return weight;
 }

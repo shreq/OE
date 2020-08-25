@@ -10,10 +10,11 @@ public:
     virtual ~DunnIndex();
 
 private:
-    long minimalCenterDistance(std::vector<Cluster *> clusters);
-    long maximalClusterDistance(std::vector<Cluster *> clusters);
+    double minimalCenterDistance(std::vector<Cluster *> clusters);
+    double maximalClusterDistance(std::vector<Cluster *> clusters);
 
 public:
-    bool operator>(const Fitness &other);
-    void updateValue(std::vector<Cluster *> clusters);
+    virtual DunnIndex *clone() const;
+    virtual bool operator>(const Fitness &other);
+    virtual void updateValue(std::vector<Cluster *> clusters);
 };

@@ -11,9 +11,10 @@ public:
     virtual ~Silhouette();
 
 private:
-    long minimalAverageDistanceToOtherClusters(Point *point, Cluster *pointCluster, std::vector<Cluster *> clusters);
+    double minimalAverageDistanceToOtherClusters(Point *point, Cluster *pointCluster, std::vector<Cluster *> clusters);
 
 public:
-    bool operator>(const Fitness &other);
-    void updateValue(std::vector<Cluster *> clusters);
+    virtual Silhouette *clone() const;
+    virtual bool operator>(const Fitness &other);
+    virtual void updateValue(std::vector<Cluster *> clusters);
 };

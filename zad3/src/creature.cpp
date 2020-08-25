@@ -8,7 +8,7 @@
 
 using namespace std;
 
-Creature::Creature(vector<Point *> data, Fitness *fitness) : centers(vector<Point *>()), data(data), fitness(fitness)
+Creature::Creature(vector<Point *> data, Fitness *fitness) : centers(vector<Point *>()), data(data), fitness(fitness->clone())
 {
     for (unsigned int i = 0; i < max(centersCountMin, getRandomInt() % (centersCountMax + 1)); i++)
     {
@@ -17,7 +17,7 @@ Creature::Creature(vector<Point *> data, Fitness *fitness) : centers(vector<Poin
     updateFitness();
 }
 
-Creature::Creature(vector<Point *> centers, vector<Point *> data, Fitness *fitness) : centers(centers), data(data), fitness(fitness)
+Creature::Creature(vector<Point *> centers, vector<Point *> data, Fitness *fitness) : centers(centers), data(data), fitness(fitness->clone())
 {
     updateFitness();
 }

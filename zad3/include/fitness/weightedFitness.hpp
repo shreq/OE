@@ -7,15 +7,16 @@ class Cluster;
 class WeightedFitness : public Fitness
 {
     Fitness *fitness;
-    long weight;
+    double weight;
 
 public:
-    WeightedFitness(Fitness *fitness, long weight);
+    WeightedFitness(Fitness *fitness, double weight);
     virtual ~WeightedFitness();
 
-    long getWeight();
+    double getWeight();
 
-    bool operator>(const Fitness &other);
-    bool operator>(WeightedFitness *other);
-    void updateValue(std::vector<Cluster *> clusters);
+    virtual WeightedFitness *clone() const;
+    virtual bool operator>(const Fitness &other);
+    virtual bool operator>(WeightedFitness *other);
+    virtual void updateValue(std::vector<Cluster *> clusters);
 };

@@ -78,26 +78,29 @@ std::vector<Point *> readCsv(std::string filepath)
     return result;
 }
 
-long averageDistance(Point *point, std::vector<Point *> otherPoints)
+double averageDistance(Point *point, std::vector<Point *> otherPoints)
 {
-    long distSum = 0.0;
+    double distSum = 0.0;
+    if (otherPoints.size() == 0) {
+        return 0;
+    }
     for (auto i : otherPoints)
     {
         if (point != i)
         {
-            long dist = point->euclideanDistance(i);
+            double dist = point->euclideanDistance(i);
             distSum += dist;
         }
     }
-    return distSum / otherPoints.size();
+    return distSum / (double) otherPoints.size();
 }
 
-long averageDistance(Cluster *cluster)
+double averageDistance(Cluster *cluster)
 {
     return averageDistance(cluster->getCenter(), cluster->getPoints());
 }
 
-long distanceOfCenters(Cluster *first, Cluster *second)
+double distanceOfCenters(Cluster *first, Cluster *second)
 {
     return first->getCenter()->euclideanDistance(second->getCenter());
 }

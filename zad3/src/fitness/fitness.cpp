@@ -5,7 +5,7 @@ using namespace std;
 
 Fitness::~Fitness() {}
 
-long Fitness::getValue() const
+double Fitness::getValue() const
 {
     return value;
 }

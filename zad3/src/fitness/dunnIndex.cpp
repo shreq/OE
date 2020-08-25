@@ -11,10 +11,15 @@ DunnIndex::~DunnIndex() {}
 
 void DunnIndex::updateValue(vector<Cluster *> clusters)
 {
-    long minCenterDistance = minimalCenterDistance(clusters);
-    long maxClusterDistance = maximalClusterDistance(clusters);
+    double minCenterDistance = minimalCenterDistance(clusters);
+    double maxClusterDistance = maximalClusterDistance(clusters);
 
     value = minCenterDistance / maxClusterDistance;
+}
+
+DunnIndex * DunnIndex::clone() const
+{
+    return new DunnIndex(*this);
 }
 
 bool DunnIndex::operator>(const Fitness &other)
@@ -22,16 +27,16 @@ bool DunnIndex::operator>(const Fitness &other)
     return value > other.getValue();
 }
 
-long DunnIndex::minimalCenterDistance(std::vector<Cluster *> clusters)
+double DunnIndex::minimalCenterDistance(std::vector<Cluster *> clusters)
 {
-    long minValue = LONG_MAX;
+    double minValue = LONG_MAX;
     for (auto i : clusters)
     {
         for (auto j : clusters)
         {
-            if (i != j)
+            if (i != j && !j->isEmpty())
             {
-                long dist = distanceOfCenters(i, j);
+                double dist = distanceOfCenters(i, j);
                 if (dist < minValue)
                 {
                     minValue = dist;
@@ -39,17 +44,22 @@ long DunnIndex::minimalCenterDistance(std::vector<Cluster *> clusters)
             }
         }
     }
+    return minValue;
 }
 
-long DunnIndex::maximalClusterDistance(std::vector<Cluster *> clusters)
+double DunnIndex::maximalClusterDistance(std::vector<Cluster *> clusters)
 {
-    long maxValue = LONG_MIN;
+    double maxValue = LONG_MIN;
     for (auto i : clusters)
     {
-        long avgDist = averageDistance(i);
-        if (avgDist > maxValue)
+        if (!i->isEmpty())
         {
-            maxValue = avgDist;
+            double avgDist = averageDistance(i);
+            if (avgDist > maxValue)
+            {
+                maxValue = avgDist;
+            }
         }
     }
+    return maxValue;
 }

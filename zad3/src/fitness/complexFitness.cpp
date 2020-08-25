@@ -10,7 +10,7 @@ ComplexFitness::ComplexFitness() : fitnessList(vector<WeightedFitness *>()) {}
 
 ComplexFitness::~ComplexFitness() {}
 
-void ComplexFitness::add(Fitness *fitness, long weight)
+void ComplexFitness::add(Fitness *fitness, double weight)
 {
     fitnessList.emplace_back(new WeightedFitness(fitness, weight));
 }
@@ -23,6 +23,16 @@ void ComplexFitness::updateValue(std::vector<Cluster *> clusters)
     }
 }
 
+ComplexFitness * ComplexFitness::clone() const
+{
+    return new ComplexFitness(*this);
+}
+
+bool ComplexFitness::operator>(const Fitness &other)
+{
+    return value > other.getValue();
+}
+
 bool ComplexFitness::operator>(const ComplexFitness &other)
 {
     if (fitnessList.size() != other.fitnessList.size())
@@ -30,12 +40,12 @@ bool ComplexFitness::operator>(const ComplexFitness &other)
         throw runtime_error("Unable to compare complex fitness with different components");
     }
 
-    long sum = 0;
+    double sum = 0;
 
     for (unsigned int i = 0; i < fitnessList.size(); i++)
     {
         bool isFitnessBetter = fitnessList[0]->operator>(other.fitnessList[0]);
-        long w = fitnessList[0]->getWeight();
+        double w = fitnessList[0]->getWeight();
         isFitnessBetter ? sum += w : sum -= w;
     }
 

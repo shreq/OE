@@ -15,7 +15,9 @@ void DavesBouldin::updateValue(vector<Cluster *> clusters)
 
     for (auto i : clusters)
     {
-        sum += maxDistance(i, clusters);
+        double dist = maxDistance(i, clusters);
+        if (dist != LONG_MIN)
+            sum += dist;
     }
 
     value = 1.0 / clusters.size() * sum;

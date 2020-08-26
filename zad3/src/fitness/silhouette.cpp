@@ -14,21 +14,20 @@ Silhouette::~Silhouette() {}
 void Silhouette::updateValue(vector<Cluster *> clusters)
 {
     double pointValueSum = 0.0;
-    double nOfPoints = 0.0;
     for (auto cluster : clusters)
     {
-        for (auto i : cluster->getPoints())
-        {
-            double avgDistInCluster = averageDistance(i, cluster->getPoints());
-            double minAvgDistToOtherClusters = minimalAverageDistanceToOtherClusters(i, cluster, clusters);
+        double avgDistInCluster = averageDistance(cluster);
+        double minAvgDistToOtherClusters = minimalAverageDistanceToOtherClusters(cluster, clusters);
 
+        double max_ = max(minAvgDistToOtherClusters, avgDistInCluster);
+        if (max_ != 0)
+        {
             double pointValue = (minAvgDistToOtherClusters - avgDistInCluster) / max(minAvgDistToOtherClusters, avgDistInCluster);
-            
             pointValueSum += pointValue;
-            nOfPoints++;
         }
+
     }
-    value = pointValueSum / (double) nOfPoints;
+    value = pointValueSum / (double) clusters.size() + 1.0;
 }
 
 Silhouette * Silhouette::clone() const
@@ -41,14 +40,14 @@ bool Silhouette::operator>(const Fitness &other)
     return value > other.getValue();
 }
 
-double Silhouette::minimalAverageDistanceToOtherClusters(Point *point, Cluster *pointCluster, std::vector<Cluster *> clusters)
+double Silhouette::minimalAverageDistanceToOtherClusters(Cluster *cluster, std::vector<Cluster *> clusters)
 {
     double minValue = LONG_MAX;
     for (auto i : clusters)
     {
-        if (i != pointCluster)
+        if (i != cluster)
         {
-            double dist = averageDistance(point, i->getPoints());
+            double dist = averageDistance(cluster->getCenter(), i->getPoints());
             if (dist < minValue)
             {
                 minValue = dist;

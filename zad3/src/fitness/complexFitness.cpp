@@ -17,10 +17,13 @@ void ComplexFitness::add(Fitness *fitness, double weight)
 
 void ComplexFitness::updateValue(std::vector<Cluster *> clusters)
 {
+    double valueSum = 0;
     for (auto fitness : fitnessList)
     {
         fitness->updateValue(clusters);
+        valueSum += fitness->getValue();
     }
+    value = valueSum;
 }
 
 ComplexFitness * ComplexFitness::clone() const

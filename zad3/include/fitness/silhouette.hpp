@@ -11,7 +11,7 @@ public:
     virtual ~Silhouette();
 
 private:
-    double minimalAverageDistanceToOtherClusters(Point *point, Cluster *pointCluster, std::vector<Cluster *> clusters);
+    double minimalAverageDistanceToOtherClusters(Cluster *pointCluster, std::vector<Cluster *> clusters);
 
 public:
     virtual Silhouette *clone() const;

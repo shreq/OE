@@ -10,26 +10,84 @@
 
 using namespace std;
 
+Fitness *inputFitness();
+void printResult(Creature *creature);
+void lameClrScr();
+
 int main()
 {
-	auto daves = new DavesBouldin();
-	auto dunn = new DunnIndex();
-	auto sil = new Silhouette();
-	auto comp = new ComplexFitness();
-	comp->add(daves, 4);
-	comp->add(dunn, 1);
-	comp->add(sil, 3);
-	auto clusterer = Clusterer(readCsv("resources/credit_card_pca.csv"), 10, comp);
-	clusterer.evolve(2);
+	unsigned int populationSize, numberOfGenerations, elitism_;
+	lameClrScr();
 
-	cout << "~~~~Best creature:" << "\n";
-	int i = 0;
-	for (auto center: clusterer.getCreatures()[0]->getCenters())
-	{
-		cout << "Center " << ++i << "\n";
-		cout << "X = " << center->getX() << "\n";
-		cout << "Y = " << center->getY() << "\n";
-	}
-	cout << "\nBest creature fitness value: " << clusterer.getCreatures()[0]->getFitnessValue();
+	auto fitness = inputFitness();
+	cout << "Enter population size:        ";
+	cin >> populationSize;
+	cout << "Enter number of generations:  ";
+	cin >> numberOfGenerations;
+	cout << "Enable elitism? [1 / 0]       ";
+	cin >> elitism_;
+	elitism = elitism_ == 0 ? false : true;
+
+	auto clusterer = Clusterer(readCsv("resources/credit_card_pca.csv"), populationSize, fitness);
+	clusterer.evolve(numberOfGenerations);
+
+	printResult(clusterer.getCreatures()[0]);
 	return 0;
+}
+
+Fitness *inputFitness()
+{
+	short method;
+	do
+	{
+		cout << "Choose fitness method:\n"
+			 << "[1] Davies-Bouldin\n"
+			 << "[2] Dunn\n"
+			 << "[3] Silhouette\n"
+			 << "[4] Complex           ";
+		cin >> method;
+	} while (method < 1 || 4 < method);
+
+	switch (method)
+	{
+	case 1:
+		return new DavesBouldin();
+	case 2:
+		return new DunnIndex();
+	case 3:
+		return new Silhouette();
+	default:
+		lameClrScr();
+		double weights[3];
+		cout << "Enter Davies-Bouldin weight:  ";
+		cin >> weights[0];
+		cout << "Enter Dunn weight             ";
+		cin >> weights[1];
+		cout << "Enter Silhouette weight:      ";
+		cin >> weights[2];
+
+		auto complex = new ComplexFitness();
+		complex->add(new DavesBouldin(), weights[0]);
+		complex->add(new DunnIndex(), weights[1]);
+		complex->add(new Silhouette(), weights[2]);
+		return complex;
+	}
+}
+
+void printResult(Creature *creature)
+{
+	cout << "\nBest creature achieved fitness = " << creature->getFitnessValue() << '\n';
+
+	int i = 1;
+	for (auto center : creature->getCenters())
+	{
+		cout << "Center #" << i++ << '\n'
+			 << " x = " << center->getX() << '\n'
+			 << " y = " << center->getY() << '\n';
+	}
+}
+
+void lameClrScr()
+{
+	cout << string(100, '\n');
 }

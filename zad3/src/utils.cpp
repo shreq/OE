@@ -81,7 +81,8 @@ std::vector<Point *> readCsv(std::string filepath)
 double averageDistance(Point *point, std::vector<Point *> otherPoints)
 {
     double distSum = 0.0;
-    if (otherPoints.size() == 0) {
+    if (otherPoints.size() == 0)
+    {
         return 0;
     }
     for (auto i : otherPoints)
@@ -92,7 +93,7 @@ double averageDistance(Point *point, std::vector<Point *> otherPoints)
             distSum += dist;
         }
     }
-    return distSum / (double) otherPoints.size();
+    return distSum / (double)otherPoints.size();
 }
 
 double averageDistance(Cluster *cluster)

@@ -12,7 +12,7 @@ class ComplexFitness : public Fitness
 public:
     ComplexFitness();
     virtual ~ComplexFitness();
-    
+
     void add(Fitness *fitness, double weight);
     virtual ComplexFitness *clone() const;
     virtual bool operator>(const Fitness &other);

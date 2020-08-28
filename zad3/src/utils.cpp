@@ -11,21 +11,21 @@
 /* #region settings */
 bool elitism = true;
 
-int centerRangeMin = -1000;
-int centerRangeMax = 1000;
+int centerRangeMin = -50;
+int centerRangeMax = 50;
 
 unsigned int centersCountMin = 2;
 unsigned int centersCountMax = 10;
 
-double centerMoveMutationRate = 0.3;
-double centerRemoveMutationRate = 0.15;
-double centerAddMutationRate = 0.15;
+double centerMoveMutationRate = 0.25;
+double centerRemoveMutationRate = 0.25;
+double centerAddMutationRate = 0.25;
 /* #endregion settings */
 
 unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 std::mt19937 generator(seed);
 std::uniform_real_distribution<double> uniform_distribution(0.0, 1.0);
-std::normal_distribution<double> normal_distribution(0, 10);
+std::normal_distribution<double> normal_distribution(0, 5);
 
 int getRandomInt()
 {

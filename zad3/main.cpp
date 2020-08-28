@@ -28,7 +28,7 @@ int main()
 	cin >> elitism_;
 	elitism = elitism_ == 0 ? false : true;
 
-	auto clusterer = Clusterer(readCsv("resources/credit_card_pca.csv"), populationSize, fitness);
+	auto clusterer = Clusterer(readCsv("resources/cats-data-pca.csv"), populationSize, fitness);
 	clusterer.evolve(numberOfGenerations);
 
 	printResult(clusterer.getCreatures()[0]);

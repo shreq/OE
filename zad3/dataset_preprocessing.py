@@ -47,11 +47,11 @@ def correlate_sort(df, limit: float = None):
 
 # endregion methods
 
-dataset = pandas.read_csv("resources/credit_card.csv").dropna().apply(factorize)
+dataset = pandas.read_csv("resources/cats-data.csv").dropna().apply(factorize)
 dataset_pca = pca(normalize(dataset))
 print(dataset_pca)
 
-dataset_pca.to_csv("resources/credit_card_pca.csv", index=False, header=False)
+dataset_pca.to_csv("resources/cats-data-pca.csv", index=False, header=False)
 
 # pyplot.scatter(
 #     x=dataset_pca.iloc[:, 0],

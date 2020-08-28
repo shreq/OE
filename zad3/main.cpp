@@ -17,7 +17,7 @@ void lameClrScr();
 int main()
 {
 	unsigned int populationSize, numberOfGenerations, elitism_;
-	double mutationRate;
+	double mutationRate, addMutationRate, removeMutationRate;
 	lameClrScr();
 
 	auto fitness = inputFitness();
@@ -28,9 +28,15 @@ int main()
 	cout << "Enable elitism? [1 / 0]       ";
 	cin >> elitism_;
 	elitism = elitism_ == 0 ? false : true;
-	cout << "Enter mutation rate [0, 1]:   ";
+	cout << "Enter 'modify gene' mutation rate [0, 1]:   ";
 	cin >> mutationRate;
-	centerAddMutationRate = centerRemoveMutationRate = centerMoveMutationRate = mutationRate;
+	cout << "Enter 'add new gene' mutation rate [0, 1]:   ";
+	cin >> addMutationRate;
+	cout << "Enter 'remove gene' mutation rate [0, 1]:   ";
+	cin >> removeMutationRate;
+	centerMoveMutationRate = mutationRate;
+	centerAddMutationRate = addMutationRate;
+	centerRemoveMutationRate = removeMutationRate;
 
 	auto clusterer = Clusterer(readCsv("resources/cats-data-pca.csv"), populationSize, fitness);
 	clusterer.evolve(numberOfGenerations);
